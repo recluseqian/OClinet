@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OClient</string>
+
+    <string name="tab_home_text">首页</string>
+    <string name="tab_subscribe_text">订阅</string>
+    <string name="tab_break_text">课间</string>
+    <string name="tab_me_text">我</string>
+
+</resources>

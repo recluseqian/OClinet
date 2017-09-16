@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:id="@+id/tab_home_layout"
+        style="@style/main_tab_item_style"
+        >
+
+        <ImageView
+            android:id="@+id/tab_item_image"
+            style="@style/main_tab_item_image_style"
+            android:src="@drawable/tab_home_icon"
+            />
+
+        <TextView
+            android:id="@+id/tab_item_text"
+            style="@style/main_tab_item_text_style"
+            android:text="@string/tab_home_text"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_subscribe_layout"
+        style="@style/main_tab_item_style"
+        >
+
+        <ImageView
+            android:id="@id/tab_item_image"
+            style="@style/main_tab_item_image_style"
+            android:src="@drawable/tab_subscribe_icon"
+            />
+
+        <TextView
+            android:id="@id/tab_item_text"
+            style="@style/main_tab_item_text_style"
+            android:text="@string/tab_subscribe_text"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_break_layout"
+        style="@style/main_tab_item_style"
+        >
+
+        <ImageView
+            android:id="@id/tab_item_image"
+            style="@style/main_tab_item_image_style"
+            android:src="@drawable/tab_break_icon"
+            />
+
+        <TextView
+            android:id="@id/tab_item_text"
+            style="@style/main_tab_item_text_style"
+            android:text="@string/tab_break_text"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_me_layout"
+        style="@style/main_tab_item_style"
+        >
+
+        <ImageView
+            android:id="@id/tab_item_image"
+            style="@style/main_tab_item_image_style"
+           android:src="@drawable/tab_me_icon"
+            />
+
+        <TextView
+            android:id="@id/tab_item_text"
+            style="@style/main_tab_item_text_style"
+            android:text="@string/tab_me_text"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

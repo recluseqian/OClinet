@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/module_sub_plan_item_image"
+        android:layout_width="61.8dp"
+        android:layout_height="90dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/module_sub_plan_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/module_sub_plan_item_image"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/text_black"
+        android:textSize="14dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        />
+
+    <TextView
+        android:id="@+id/module_sub_plan_item_sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/module_sub_plan_item_title"
+        android:layout_below="@id/module_sub_plan_item_title"
+        android:layout_marginTop="3dp"
+        android:textSize="11dp"
+        android:textColor="@color/text_gray"
+        android:maxLines="1"
+        android:ellipsize="end"
+        />
+
+    <TextView
+        android:id="@+id/module_sub_plan_item_meta_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:textSize="12dp"
+        android:layout_alignStart="@id/module_sub_plan_item_title"
+        android:layout_alignBottom="@id/module_sub_plan_item_image"
+        android:layout_marginBottom="3dp"
+        />
+
+    <TextView
+        android:id="@+id/module_sub_plan_item_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/module_sub_plan_item_meta_info"
+        android:layout_alignParentRight="true"
+        android:textSize="12dp"
+        android:textColor="#555"
+        />
+
+</RelativeLayout>
