@@ -16,7 +16,7 @@ public interface IPresenter<T> {
 
     void onDestroy();
 
-    void initData(@NonNull Bundle bundle);
+    void initData(Bundle bundle);
 
     void requestData();
 

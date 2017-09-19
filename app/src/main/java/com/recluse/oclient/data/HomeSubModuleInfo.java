@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by recluse on 17-9-14.
  */
 
-public class ModuleItemInfo implements Serializable{
+public class HomeSubModuleInfo implements Serializable{
     public int id;
     public String title;
     public String imgUrl;

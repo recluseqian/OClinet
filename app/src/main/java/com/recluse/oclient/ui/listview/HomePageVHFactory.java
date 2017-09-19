@@ -15,9 +15,11 @@ import com.recluse.base.view.listview.BaseRecyclerItemAdapter;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
-import com.recluse.oclient.data.ModuleInfo;
-import com.recluse.oclient.data.ModuleItemInfo;
+import com.recluse.oclient.data.HomeModuleInfo;
+import com.recluse.oclient.data.HomeSubModuleInfo;
 import com.recluse.base.utils.ViewsUtils;
+import com.recluse.oclient.ui.BannerViewPagerHelper;
+import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ import butterknife.BindView;
  * Created by recluse on 17-9-13.
  */
 
-public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
+public class HomePageVHFactory extends BaseViewHolderFactory<HomeModuleInfo> {
 
     private static final String TAG = "HomePageVHFactory";
 
@@ -37,32 +39,36 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
     private static final int VIEW_TYPE_PLAN = 1;
     private static final int VIEW_TYPE_SUBSCRIBE = 2;
     private static final int VIEW_TYPE_TOPIC = 3;
+    private static final int VIEW_TYPE_BANNER = 4;
 
-    private static final int VIEW_TYPE_COUNT = 4;
+    private static final int VIEW_TYPE_COUNT = 5;
 
     public HomePageVHFactory(@NonNull Context context) {
         super(context);
     }
 
     @Override
-    public int getViewType(ModuleInfo data, int position) {
+    public int getViewType(HomeModuleInfo data, int position) {
         int type = VIEW_TYPE_DEFAULT;
         if (data != null) {
-            switch (data.style) {
-                case 1:
-                    type = VIEW_TYPE_DEFAULT;
-                    break;
-                case 2:
-                    type = VIEW_TYPE_SUBSCRIBE;
-                    break;
-                case 3:
-                    type = VIEW_TYPE_TOPIC;
-                    break;
-                case 4:
-                    type = VIEW_TYPE_PLAN;
-                    break;
+            if (data.mBannerInfoList != null) {
+                type = VIEW_TYPE_BANNER;
+            } else {
+                switch (data.style) {
+                    case 1:
+                        type = VIEW_TYPE_DEFAULT;
+                        break;
+                    case 2:
+                        type = VIEW_TYPE_SUBSCRIBE;
+                        break;
+                    case 3:
+                        type = VIEW_TYPE_TOPIC;
+                        break;
+                    case 4:
+                        type = VIEW_TYPE_PLAN;
+                        break;
+                }
             }
-
             return type + getBaseType();
         }
         return BaseRecyclerItemAdapter.UNKNOWN_TYPE;
@@ -86,6 +92,9 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
                 return new ModuleItemSubscribeVH(view);
             case VIEW_TYPE_TOPIC:
                 return new ModuleItemTopicVH(view);
+            case VIEW_TYPE_BANNER:
+                view = inflater.inflate(R.layout.home_page_header_layout, parent, false);
+                return new HomePageBannerVH(view);
             default:
                 return null;
         }
@@ -96,7 +105,7 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
         return VIEW_TYPE_COUNT;
     }
 
-    static class ModuleItemDefaultVH extends BaseRecyclerViewHolder<ModuleInfo> {
+    static class ModuleItemDefaultVH extends BaseRecyclerViewHolder<HomeModuleInfo> {
 
         @BindView(R.id.module_item_title)
         TextView mTitleView;
@@ -105,9 +114,9 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
         @BindView(R.id.module_item_footer)
         View mFooterView;
 
-        List<ModuleItemInfo> mItemDataList;
+        List<HomeSubModuleInfo> mItemDataList;
         LinearLayoutManager mLayoutManager;
-        BaseRecyclerItemAdapter<ModuleItemInfo> mAdapter;
+        BaseRecyclerItemAdapter<HomeSubModuleInfo> mAdapter;
 
         ModuleItemDefaultVH(View itemView) {
             super(itemView);
@@ -119,7 +128,7 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
             mRecyclerView.setAdapter(mAdapter);
         }
 
-        BaseRecyclerItemAdapter<ModuleItemInfo> createAdapter(Context context, List<ModuleItemInfo> list) {
+        BaseRecyclerItemAdapter<HomeSubModuleInfo> createAdapter(Context context, List<HomeSubModuleInfo> list) {
             return new BaseRecyclerItemAdapter<>(context, list, createVHFactoryList(context));
         }
 
@@ -127,14 +136,14 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
             return new GridLayoutManager(context, 2);
         }
 
-        List<BaseViewHolderFactory<ModuleItemInfo>> createVHFactoryList(Context context) {
-            List<BaseViewHolderFactory<ModuleItemInfo>> list = new ArrayList<>();
+        List<BaseViewHolderFactory<HomeSubModuleInfo>> createVHFactoryList(Context context) {
+            List<BaseViewHolderFactory<HomeSubModuleInfo>> list = new ArrayList<>();
             list.add(new HomePageSubVHFactory(context));
             return list;
         }
 
         @Override
-        public void onBindData(ModuleInfo data, int position) {
+        public void onBindData(HomeModuleInfo data, int position) {
             super.onBindData(data, position);
             if (data == null) {
                 return;
@@ -174,8 +183,8 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
         }
 
         @Override
-        List<BaseViewHolderFactory<ModuleItemInfo>> createVHFactoryList(Context context) {
-            List<BaseViewHolderFactory<ModuleItemInfo>> list = new ArrayList<>();
+        List<BaseViewHolderFactory<HomeSubModuleInfo>> createVHFactoryList(Context context) {
+            List<BaseViewHolderFactory<HomeSubModuleInfo>> list = new ArrayList<>();
             list.add(new HomePageSubVHFactory.HomePagePlanSubVHFactory(context));
             return list;
         }
@@ -193,8 +202,8 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
         }
 
         @Override
-        List<BaseViewHolderFactory<ModuleItemInfo>> createVHFactoryList(Context context) {
-            List<BaseViewHolderFactory<ModuleItemInfo>> list = new ArrayList<>();
+        List<BaseViewHolderFactory<HomeSubModuleInfo>> createVHFactoryList(Context context) {
+            List<BaseViewHolderFactory<HomeSubModuleInfo>> list = new ArrayList<>();
             list.add(new HomePageSubVHFactory.HomePageSubscribeSubVHFactory(context));
             return list;
         }
@@ -212,10 +221,36 @@ public class HomePageVHFactory extends BaseViewHolderFactory<ModuleInfo> {
         }
 
         @Override
-        List<BaseViewHolderFactory<ModuleItemInfo>> createVHFactoryList(Context context) {
-            List<BaseViewHolderFactory<ModuleItemInfo>> list = new ArrayList<>();
+        List<BaseViewHolderFactory<HomeSubModuleInfo>> createVHFactoryList(Context context) {
+            List<BaseViewHolderFactory<HomeSubModuleInfo>> list = new ArrayList<>();
             list.add(new HomePageSubVHFactory.HomePageTopicSubVHFactory(context));
             return list;
+        }
+    }
+
+    static class HomePageBannerVH extends BaseRecyclerViewHolder<HomeModuleInfo> {
+
+        @BindView(R.id.home_top_banner)
+        Banner mBanner;
+
+        BannerViewPagerHelper mBannerHelper;
+
+        public HomePageBannerVH(View itemView) {
+            super(itemView);
+
+            mBannerHelper = new BannerViewPagerHelper(mBanner);
+        }
+
+        @Override
+        public void onBindData(HomeModuleInfo data, int position) {
+            super.onBindData(data, position);
+            Log.d(TAG, "onBindData: banner view holder");
+            if (data == null) {
+                return;
+            }
+            if (data.mBannerInfoList != null) {
+                mBannerHelper.updateImageList(data.mBannerInfoList);
+            }
         }
     }
 }

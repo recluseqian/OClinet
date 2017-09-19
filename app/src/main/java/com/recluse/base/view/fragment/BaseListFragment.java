@@ -58,9 +58,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
         mPresenter = createPresenter();
         mPresenter.onCreate();
         Bundle bundle = super.getArguments();
-        if (bundle != null) {
-            mPresenter.initData(bundle);
-        }
+        mPresenter.initData(bundle);
     }
 
     protected void initSpringView() {
@@ -149,6 +147,17 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
     }
 
     @Override
+    public void onUpdateList(int positionStart, int itemCount) {
+        if (mSpringView != null) {
+            mSpringView.onFinishFreshAndLoad();
+        }
+
+        if (mAdapter != null) {
+            mAdapter.notifyItemRangeChanged(positionStart, itemCount);
+        }
+    }
+
+    @Override
     public void onNoMoreContent() {
         if (mSpringView != null) {
             mSpringView.onFinishFreshAndLoad();
@@ -166,6 +175,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
     @Override
     public void onFailed(int type) {
         if (mSpringView != null) {
+            mSpringView.onFinishFreshAndLoad();
             mSpringView.setEnable(false);
         }
     }

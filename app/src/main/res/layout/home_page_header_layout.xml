@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <com.youth.banner.Banner
+        android:id="@+id/home_top_banner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/home_banner_hot_item"
+            style="@style/classes_banner_item_style"
+            >
+
+            <ImageView
+                style="@style/classes_banner_item_image_style"
+                android:src="@drawable/icon_home_hot"
+                />
+
+            <TextView
+                style="@style/classes_banner_item_text_style"
+                android:text="最热"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_banner_new_item"
+            style="@style/classes_banner_item_style"
+            >
+
+            <ImageView
+                style="@style/classes_banner_item_image_style"
+                android:src="@drawable/icon_home_new"
+                />
+
+            <TextView
+                style="@style/classes_banner_item_text_style"
+                android:text="最新"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_banner_live_item"
+            style="@style/classes_banner_item_style"
+            >
+
+            <ImageView
+                style="@style/classes_banner_item_image_style"
+                android:src="@drawable/icon_home_live"
+                />
+
+            <TextView
+                style="@style/classes_banner_item_text_style"
+                android:text="直播"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_banner_classify_item"
+            style="@style/classes_banner_item_style"
+            >
+
+            <ImageView
+                style="@style/classes_banner_item_image_style"
+                android:src="@drawable/icon_home_classify"
+                />
+
+            <TextView
+                style="@style/classes_banner_item_text_style"
+                android:text="分类"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_gray"
+        />
+
+</LinearLayout>

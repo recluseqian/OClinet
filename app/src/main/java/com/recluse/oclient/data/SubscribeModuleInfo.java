@@ -1,11 +1,15 @@
 package com.recluse.oclient.data;
 
+import com.google.gson.annotations.Expose;
+
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by recluse on 17-9-15.
  */
 
-public class SubscribeInfo {
-
+public class SubscribeModuleInfo implements Serializable{
     public int subId;
     public int subscribeId;
     public String subscribeName;
@@ -34,4 +38,7 @@ public class SubscribeInfo {
     public Object subscribers;
     public int cacheType;
     public int index;
+
+    @Expose
+    public List<BannerInfo> mBannerInfoList;
 }

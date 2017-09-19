@@ -7,6 +7,12 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
+    <ViewStub
+        android:id="@+id/subscribe_item_header_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/subscribe_item_header_layout"/>
+
     <RelativeLayout
         android:id="@+id/subscribe_media_info_layout"
         android:layout_width="match_parent"

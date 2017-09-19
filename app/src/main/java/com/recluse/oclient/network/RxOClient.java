@@ -2,14 +2,15 @@ package com.recluse.oclient.network;
 
 import android.util.Log;
 
-import com.recluse.oclient.data.ModuleEntity;
+import com.recluse.oclient.data.BannerInfoEntity;
+import com.recluse.oclient.data.HomeModuleEntity;
 import com.recluse.base.model.event.BaseEvent;
 import com.recluse.oclient.data.SubscribeEntity;
+import com.recluse.oclient.event.BannerInfoEvent;
 import com.recluse.oclient.event.HomePageModuleEvent;
 import com.recluse.oclient.event.SubscribePageInfoEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -29,9 +30,9 @@ public class RxOClient {
                 .getHomePageModule()
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<ModuleEntity>() {
+                .subscribe(new Consumer<HomeModuleEntity>() {
                     @Override
-                    public void accept(ModuleEntity moduleEntity) throws Exception {
+                    public void accept(HomeModuleEntity moduleEntity) throws Exception {
                         Log.d(TAG, "receive data of " + moduleEntity.getClass().getSimpleName());
                         EventBus.getDefault().post(
                                 new HomePageModuleEvent(uniqueId, BaseEvent.CODE_SUCCESS, moduleEntity));
@@ -71,6 +72,27 @@ public class RxOClient {
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
+                    }
+                });
+    }
+
+    public static void getBannerInfo(final int uniqueId, int position) {
+        RetrofitManager.getRetrofit(RetrofitManager.BASE_URL)
+                .create(OClientApi.class)
+                .getBannerInfo(position, OClientApi.BANNER_TYPES)
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Consumer<BannerInfoEntity>() {
+                    @Override
+                    public void accept(BannerInfoEntity bannerInfoEntity) throws Exception {
+                        Log.d(TAG, "receive data of " + bannerInfoEntity.getClass().getSimpleName());
+                        EventBus.getDefault().post(new BannerInfoEvent(uniqueId, BaseEvent.CODE_SUCCESS, bannerInfoEntity));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.e(TAG, throwable.getLocalizedMessage());
+                        EventBus.getDefault().post(new BannerInfoEvent(uniqueId, BaseEvent.CODE_FAILED, null));
                     }
                 });
     }

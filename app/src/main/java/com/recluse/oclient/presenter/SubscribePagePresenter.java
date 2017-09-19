@@ -1,15 +1,18 @@
 package com.recluse.oclient.presenter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.recluse.base.presenter.IListPresenter;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.base.view.listview.IListView;
-import com.recluse.oclient.data.SubscribeInfo;
+import com.recluse.oclient.data.SubscribeModuleInfo;
+import com.recluse.oclient.event.BannerInfoEvent;
 import com.recluse.oclient.event.SubscribePageInfoEvent;
 import com.recluse.oclient.network.RxOClient;
+import com.recluse.oclient.ui.fragment.SubscribePageListFragment;
 import com.recluse.oclient.ui.listview.SubscribePageVHFactory;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -22,13 +25,28 @@ import java.util.List;
  * Created by recluse on 17-9-15.
  */
 
-public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<SubscribeInfo> {
+public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<SubscribeModuleInfo> {
 
     private static final String TAG = "SubscribePagePresenter";
     private static final int PAGE_SIZE = 10;
 
+    private SubscribeModuleInfo mHeaderModule;
+
     public SubscribePagePresenter(@NonNull IListView callback) {
         super(callback);
+    }
+
+    @Override
+    public void initData(Bundle bundle) {
+        super.initData(bundle);
+        mHeaderModule = new SubscribeModuleInfo();
+        mHeaderModule.mBannerInfoList = new ArrayList<>();
+        if (mDataList == null) {
+            mDataList = new ArrayList<>();
+        } else {
+            mDataList.clear();
+        }
+        mDataList.add(mHeaderModule);
     }
 
     @Override
@@ -37,6 +55,7 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
         if (mState != State.TYPE_IDEAL) {
             return;
         }
+        RxOClient.getBannerInfo(mUniqueId, 2);
         RxOClient.getSubscribeInfo(mUniqueId, PAGE_SIZE, "");
         mState = State.TYPE_REFRESHING;
     }
@@ -47,6 +66,7 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
         if (mState != State.TYPE_IDEAL) {
             return;
         }
+        RxOClient.getBannerInfo(mUniqueId, 2);
         RxOClient.getSubscribeInfo(mUniqueId, PAGE_SIZE, "");
         mState = State.TYPE_REFRESHING;
     }
@@ -66,8 +86,8 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
     }
 
     @Override
-    public List<BaseViewHolderFactory<SubscribeInfo>> createFactoryList(Context context) {
-        List<BaseViewHolderFactory<SubscribeInfo>> list = new ArrayList<>();
+    public List<BaseViewHolderFactory<SubscribeModuleInfo>> createFactoryList(Context context) {
+        List<BaseViewHolderFactory<SubscribeModuleInfo>> list = new ArrayList<>();
         list.add(new SubscribePageVHFactory(context));
         return list;
     }
@@ -80,7 +100,14 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
 
         if (event.data != null && event.data.data != null) {
             Log.d(TAG, "onGetSubscribePageInfoEvent: " + event.data.data.size());
-            updateList(event.data.data, mState == State.TYPE_REFRESHING, false);
+            if (mState == State.TYPE_REFRESHING) {
+                List<SubscribeModuleInfo> list = new ArrayList<>(event.data.data.size() + 1);
+                list.add(mHeaderModule);
+                list.addAll(event.data.data);
+                updateList(list, true, false);
+            } else {
+                updateList(event.data.data, false, false);
+            }
         } else {
             mCallback.onFailed(0);
         }
@@ -88,4 +115,24 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
         mState = State.TYPE_IDEAL;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetBannerInfo(BannerInfoEvent event) {
+        if (mCallback == null || mUniqueId != event.uniqueId) {
+            return;
+        }
+
+        if (event.data != null && event.data.data != null) {
+            if (mHeaderModule == null || mHeaderModule.mBannerInfoList == null) {
+                Log.e(TAG, "onGetBannerInfo: do not init header module");
+                return;
+            }
+            mHeaderModule.mBannerInfoList.clear();
+            mHeaderModule.mBannerInfoList.addAll(event.data.data);
+
+            mCallback.onUpdateList(0, 1);
+        }
+
+        mState = State.TYPE_IDEAL;
+    }
 }

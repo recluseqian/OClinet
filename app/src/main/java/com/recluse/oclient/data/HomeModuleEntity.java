@@ -7,7 +7,7 @@ import java.util.List;
  * Created by recluse on 17-9-13.
  */
 
-public class ModuleEntity implements Serializable {
+public class HomeModuleEntity implements Serializable {
     public int code;
-    public List<ModuleInfo> data;
+    public List<HomeModuleInfo> data;
 }

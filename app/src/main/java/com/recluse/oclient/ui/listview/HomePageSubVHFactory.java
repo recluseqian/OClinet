@@ -14,11 +14,11 @@ import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
-import com.recluse.oclient.data.ModuleItemInfo;
+import com.recluse.oclient.data.HomeSubModuleInfo;
 
 import butterknife.BindView;
 
-public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<ModuleItemInfo> {
+public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<HomeSubModuleInfo> {
 
     private static final String TAG = "HomePageSubVHFactory";
 
@@ -34,11 +34,11 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
     }
 
     @Override
-    protected BaseRecyclerViewHolder<ModuleItemInfo> createDefaultViewHolder(@NonNull View itemView) {
+    protected BaseRecyclerViewHolder<HomeSubModuleInfo> createDefaultViewHolder(@NonNull View itemView) {
         return new HomePageDefaultSubItemVH(itemView);
     }
 
-    static class HomePageDefaultSubItemVH extends BaseRecyclerViewHolder<ModuleItemInfo> {
+    static class HomePageDefaultSubItemVH extends BaseRecyclerViewHolder<HomeSubModuleInfo> {
 
         @BindView(R.id.module_sub_item_image)
         ImageView mSubItemImageView;
@@ -59,7 +59,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        public void onBindData(ModuleItemInfo data, int position) {
+        public void onBindData(HomeSubModuleInfo data, int position) {
             super.onBindData(data, position);
             if (data == null) {
                 return;
@@ -76,7 +76,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
     }
 
-    static class HomePagePlanSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<ModuleItemInfo> {
+    static class HomePagePlanSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<HomeSubModuleInfo> {
 
         HomePagePlanSubVHFactory(@NonNull Context context) {
             super(context);
@@ -88,12 +88,12 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        protected BaseRecyclerViewHolder<ModuleItemInfo> createDefaultViewHolder(@NonNull View itemView) {
+        protected BaseRecyclerViewHolder<HomeSubModuleInfo> createDefaultViewHolder(@NonNull View itemView) {
             return new HomePagePlanSubVH(itemView);
         }
     }
 
-    static class HomePagePlanSubVH extends BaseRecyclerViewHolder<ModuleItemInfo> {
+    static class HomePagePlanSubVH extends BaseRecyclerViewHolder<HomeSubModuleInfo> {
 
         @BindView(R.id.module_sub_plan_item_image)
         ImageView mImageView;
@@ -111,7 +111,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        public void onBindData(ModuleItemInfo data, int position) {
+        public void onBindData(HomeSubModuleInfo data, int position) {
             super.onBindData(data, position);
 
             if (data == null) {
@@ -130,7 +130,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
     }
 
-    static class HomePageSubscribeSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<ModuleItemInfo> {
+    static class HomePageSubscribeSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<HomeSubModuleInfo> {
 
         HomePageSubscribeSubVHFactory(@NonNull Context context) {
             super(context);
@@ -142,13 +142,13 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        protected BaseRecyclerViewHolder<ModuleItemInfo> createDefaultViewHolder(@NonNull View itemView) {
+        protected BaseRecyclerViewHolder<HomeSubModuleInfo> createDefaultViewHolder(@NonNull View itemView) {
             return new HomePageSubscribeSubVH(itemView);
         }
 
     }
 
-    static class HomePageSubscribeSubVH extends BaseRecyclerViewHolder<ModuleItemInfo> {
+    static class HomePageSubscribeSubVH extends BaseRecyclerViewHolder<HomeSubModuleInfo> {
 
         @BindView(R.id.module_sub_subscribe_item_image)
         ImageView mImageView;
@@ -167,7 +167,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        public void onBindData(ModuleItemInfo data, int position) {
+        public void onBindData(HomeSubModuleInfo data, int position) {
             super.onBindData(data, position);
             if (data == null) {
                 return;
@@ -183,7 +183,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
     }
 
-    static class HomePageTopicSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<ModuleItemInfo> {
+    static class HomePageTopicSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<HomeSubModuleInfo> {
 
         HomePageTopicSubVHFactory(@NonNull Context context) {
             super(context);
@@ -195,12 +195,12 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        protected BaseRecyclerViewHolder<ModuleItemInfo> createDefaultViewHolder(@NonNull View itemView) {
+        protected BaseRecyclerViewHolder<HomeSubModuleInfo> createDefaultViewHolder(@NonNull View itemView) {
             return new HomePageTopicSubVH(itemView);
         }
     }
 
-    static class HomePageTopicSubVH extends BaseRecyclerViewHolder<ModuleItemInfo> {
+    static class HomePageTopicSubVH extends BaseRecyclerViewHolder<HomeSubModuleInfo> {
 
         @BindView(R.id.module_sub_topic_item_image)
         ImageView mImageView;
@@ -214,7 +214,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
         }
 
         @Override
-        public void onBindData(ModuleItemInfo data, int position) {
+        public void onBindData(HomeSubModuleInfo data, int position) {
             super.onBindData(data, position);
             if (data == null) {
                 return;

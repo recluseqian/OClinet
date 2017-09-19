@@ -8,6 +8,8 @@ import com.recluse.base.view.IView;
 
 public interface IListView<T> extends IView<T> {
 
+    void onUpdateList(int positionStart, int itemCount);
+
     void onNoMoreContent();
 
 }

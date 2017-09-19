@@ -2,8 +2,12 @@ package com.recluse.oclient.ui.listview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.ViewUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,10 +16,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.recluse.base.utils.DateUtils;
 import com.recluse.base.utils.DisplayUtils;
+import com.recluse.base.utils.ViewsUtils;
+import com.recluse.base.view.listview.BaseRecyclerItemAdapter;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
-import com.recluse.oclient.data.SubscribeInfo;
+import com.recluse.oclient.data.SubscribeModuleInfo;
+import com.recluse.oclient.ui.BannerViewPagerHelper;
+import com.youth.banner.Banner;
 
 import butterknife.BindView;
 
@@ -23,25 +31,61 @@ import butterknife.BindView;
  * Created by recluse on 17-9-15.
  */
 
-public class SubscribePageVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<SubscribeInfo> {
+public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModuleInfo> {
 
     private static final String TAG = "SubscribePageVHFactory";
+
+    private static final int VIEW_TYPE_DEFAULT = 0;
+    private static final int VIEW_TYPE_BANNER = 1;
+
+    private static final int TYPE_COUNT = 2;
 
     public SubscribePageVHFactory(@NonNull Context context) {
         super(context);
     }
 
     @Override
-    protected int getDefaultLayoutRes() {
-        return R.layout.subscirbe_item_layout;
+    public int getViewType(SubscribeModuleInfo data, int position) {
+        int type = VIEW_TYPE_DEFAULT;
+        if (data != null) {
+            if (data.mBannerInfoList != null) {
+                type = VIEW_TYPE_BANNER;
+            }
+
+            return type + getBaseType();
+        }
+
+        return BaseRecyclerItemAdapter.UNKNOWN_TYPE;
     }
 
     @Override
-    protected BaseRecyclerViewHolder<SubscribeInfo> createDefaultViewHolder(@NonNull View itemView) {
-        return new SubscribeInfoVH(itemView);
+    public BaseRecyclerViewHolder createViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        if (inflater == null) {
+            Log.e(TAG, "can not get the inflater");
+            return null;
+        }
+
+        View view;
+        switch (viewType - getBaseType()) {
+            case VIEW_TYPE_DEFAULT:
+                view = inflater.inflate(R.layout.subscirbe_item_layout, parent, false);
+                return new SubscribeInfoVH(view);
+            case VIEW_TYPE_BANNER:
+                view = inflater.inflate(R.layout.subscribe_page_header_layout, parent, false);
+                return new SubscribeBannerVH(view);
+
+            default:
+                return null;
+        }
     }
 
-    static class SubscribeInfoVH extends BaseRecyclerViewHolder<SubscribeInfo> {
+    @Override
+    public int getViewTypeCount() {
+        return TYPE_COUNT;
+    }
+
+    static class SubscribeInfoVH extends BaseRecyclerViewHolder<SubscribeModuleInfo> {
 
         @BindView(R.id.subscribe_media_info_image)
         ImageView mMediaInfoImageView;
@@ -57,6 +101,10 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory.SimpleViewHold
         TextView mContentTitleView;
         @BindView(R.id.subscribe_content_info_sub_title)
         TextView mContentSubTitleView;
+        @BindView(R.id.subscribe_item_header_view_stub)
+        ViewStub mHeaderViewStub;
+        View mHeaderView;
+
 
         public SubscribeInfoVH(View itemView) {
             super(itemView);
@@ -70,8 +118,19 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory.SimpleViewHold
         }
 
         @Override
-        public void onBindData(SubscribeInfo data, int position) {
+        public void onBindData(SubscribeModuleInfo data, int position) {
             super.onBindData(data, position);
+
+            if (position == 1) {
+                if (mHeaderView == null) {
+                    mHeaderView = mHeaderViewStub.inflate();
+                } else {
+                    ViewsUtils.setViewVisibility(mHeaderView, View.VISIBLE);
+                }
+            } else if (mHeaderView != null) {
+                ViewsUtils.setViewVisibility(mHeaderView, View.GONE);
+            }
+
             if (data == null) {
                 return;
             }
@@ -92,4 +151,31 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory.SimpleViewHold
             mContentSubTitleView.setText(data.contentDesc);
         }
     }
+
+    static class SubscribeBannerVH extends BaseRecyclerViewHolder<SubscribeModuleInfo> {
+
+        @BindView(R.id.subscribe_top_banner)
+        Banner mBanner;
+
+        BannerViewPagerHelper mBannerHelper;
+
+        public SubscribeBannerVH(View itemView) {
+            super(itemView);
+
+            mBannerHelper = new BannerViewPagerHelper(mBanner);
+        }
+
+        @Override
+        public void onBindData(SubscribeModuleInfo data, int position) {
+            super.onBindData(data, position);
+
+            if (data == null) {
+                return;
+            }
+            if (data.mBannerInfoList != null) {
+                mBannerHelper.updateImageList(data.mBannerInfoList);
+            }
+        }
+    }
 }
+

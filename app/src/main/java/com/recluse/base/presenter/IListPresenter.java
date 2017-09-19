@@ -2,6 +2,7 @@ package com.recluse.base.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -80,7 +81,7 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
         public abstract List<BaseViewHolderFactory<D>> createFactoryList(Context context);
 
         @Override
-        public void initData(@NonNull Bundle bundle) {
+        public void initData(Bundle bundle) {
             //nothing to do
         }
 
@@ -106,8 +107,11 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
                 return;
             }
 
+            int start = 0;
             if (isFromRefresh) {
                 mDataList.clear();
+            } else {
+                start = mDataList.size();
             }
 
             if (processForeach) {
@@ -119,8 +123,13 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             } else {
                 mDataList.addAll(list);
             }
-
             mCallback.onDataSetChanged();
+
+//            if (isFromRefresh) {
+//                mCallback.onDataSetChanged();
+//            } else {
+//                mCallback.onUpdateList(start, list.size());
+//            }
         }
 
         /**
