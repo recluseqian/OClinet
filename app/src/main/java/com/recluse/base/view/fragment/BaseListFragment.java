@@ -137,6 +137,14 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
+    }
+
+    @Override
     public void onDataSetChanged() {
         if (mSpringView != null) {
             mSpringView.onFinishFreshAndLoad();

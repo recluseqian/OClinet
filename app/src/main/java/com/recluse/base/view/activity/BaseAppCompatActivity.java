@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.recluse.base.OCApplication;
 import com.recluse.base.model.event.NullEvent;
 import com.recluse.base.utils.SystemUtils;
 
@@ -37,6 +38,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity{
         super.onDestroy();
         mUnbinder.unbind();
         EventBus.getDefault().unregister(this);
+        OCApplication.getRefWatcher(this).watch(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

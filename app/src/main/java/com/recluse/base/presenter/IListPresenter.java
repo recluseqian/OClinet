@@ -123,13 +123,12 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             } else {
                 mDataList.addAll(list);
             }
-            mCallback.onDataSetChanged();
 
-//            if (isFromRefresh) {
-//                mCallback.onDataSetChanged();
-//            } else {
-//                mCallback.onUpdateList(start, list.size());
-//            }
+            if (isFromRefresh) {
+                mCallback.onDataSetChanged();
+            } else {
+                mCallback.onUpdateList(start, list.size());
+            }
         }
 
         /**

@@ -2,7 +2,6 @@ package com.recluse.oclient.ui.listview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.ViewUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +25,6 @@ import com.recluse.oclient.ui.BannerViewPagerHelper;
 import com.youth.banner.Banner;
 
 import butterknife.BindView;
-
-/**
- * Created by recluse on 17-9-15.
- */
 
 public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModuleInfo> {
 
@@ -106,7 +101,7 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModul
         View mHeaderView;
 
 
-        public SubscribeInfoVH(View itemView) {
+        SubscribeInfoVH(View itemView) {
             super(itemView);
 
             Context context = itemView.getContext();
@@ -159,7 +154,7 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModul
 
         BannerViewPagerHelper mBannerHelper;
 
-        public SubscribeBannerVH(View itemView) {
+        SubscribeBannerVH(View itemView) {
             super(itemView);
 
             mBannerHelper = new BannerViewPagerHelper(mBanner);

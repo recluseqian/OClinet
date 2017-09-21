@@ -15,8 +15,10 @@ import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
 import com.recluse.oclient.data.HomeSubModuleInfo;
+import com.recluse.oclient.ui.activity.DetailActivity;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolderFactory<HomeSubModuleInfo> {
 
@@ -73,6 +75,11 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
                     .into(mSubItemImageView);
             mTitleView.setText(data.title);
             mMetaInfoView.setText(data.viewCount + "人观看");
+        }
+
+        @OnClick(R.id.module_sub_item_layout)
+        public void onModuleSubItemClick(View view) {
+            DetailActivity.startActivity(view.getContext());
         }
     }
 
