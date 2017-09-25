@@ -5,7 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.recluse.base.OCApplication;
+import com.recluse.oclient.OCApplication;
 import com.recluse.base.model.event.NullEvent;
 import com.recluse.base.utils.SystemUtils;
 
@@ -39,6 +39,14 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity{
         mUnbinder.unbind();
         EventBus.getDefault().unregister(this);
         OCApplication.getRefWatcher(this).watch(this);
+    }
+
+    public int getUniqueId() {
+        return mUniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        mUniqueId = uniqueId;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

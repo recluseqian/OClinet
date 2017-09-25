@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/video_h_list_item_layout"
+    android:layout_width="120dp"
+    android:layout_height="80dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    >
+
+    <ImageView
+        android:id="@+id/video_h_list_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/subscribe_item_bg"
+        />
+
+    <TextView
+        android:id="@+id/video_h_list_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="2"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        />
+
+    <TextView
+        android:id="@+id/video_h_list_item_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/video_h_list_item_image"
+        android:layout_alignLeft="@id/video_h_list_item_image"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        />
+</RelativeLayout>

@@ -4,11 +4,14 @@
     <color name="colorPrimaryDark">#0d5302</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="light_black">#111111</color>
 
     <color name="text_black">#222222</color>
     <color name="text_gray">#777777</color>
+    <color name="text_light_gray">#cccccc</color>
 
-    <color name="divider_gray">#aaa</color>
+    <color name="divider_gray">#ddd</color>
     <color name="tab_text_normal_color">#999</color>
     <color name="tab_text_chosen_color">#0d5302</color>
 </resources>

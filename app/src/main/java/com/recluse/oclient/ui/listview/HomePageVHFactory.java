@@ -15,6 +15,7 @@ import com.recluse.base.view.listview.BaseRecyclerItemAdapter;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
+import com.recluse.oclient.StartActivityUtils;
 import com.recluse.oclient.data.HomeModuleInfo;
 import com.recluse.oclient.data.HomeSubModuleInfo;
 import com.recluse.base.utils.ViewsUtils;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by recluse on 17-9-13.

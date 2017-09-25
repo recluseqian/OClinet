@@ -1,4 +1,4 @@
-package com.recluse.base;
+package com.recluse.oclient;
 
 import android.app.Application;
 import android.content.Context;

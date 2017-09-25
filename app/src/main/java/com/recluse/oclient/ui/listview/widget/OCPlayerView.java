@@ -1,12 +1,7 @@
 package com.recluse.oclient.ui.listview.widget;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.provider.Settings;
-import android.support.v7.widget.ViewUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.recluse.base.utils.SystemUtils;
 import com.recluse.base.utils.TimerUtils;
 import com.recluse.base.utils.ViewsUtils;
 import com.recluse.base.view.widget.VideoPlayerView;
@@ -25,16 +19,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-/**
- * Created by recluse on 17-9-20.
- */
-
 public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarChangeListener{
 
     private static final String TAG = "OCPlayerView";
 
-    private int SEEK_BAR_STATE_IDEAL = 0;
-    private int SEEK_BAR_STATE_DRAGGING = 1;
+    private static int SEEK_BAR_STATE_IDEAL = 0;
+    private static int SEEK_BAR_STATE_DRAGGING = 1;
 
     @BindView(R.id.player_seek_bar)
     SeekBar mSeekBar;
@@ -64,7 +54,16 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
 
     @Override
     protected View getCoverView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.player_cover_view_layout, null);
+        return LayoutInflater.from(mContext).inflate(R.layout.player_cover_view_layout, this, false);
+    }
+
+    public void restart(String url) {
+        super.stop();
+        ViewsUtils.setViewVisibility(mPlayerForegroundView, View.VISIBLE);
+        ViewsUtils.setViewVisibility(mLoadingImage, View.VISIBLE);
+        mLoadingAnim = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
+        mLoadingImage.startAnimation(mLoadingAnim);
+        start(url);
     }
 
     @Override
@@ -95,7 +94,6 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     @Override
     public void onBufferingUpdate(IMediaPlayer mp, int percent) {
         super.onBufferingUpdate(mp, percent);
-        Log.e(TAG, "onBufferingUpdate: " + mDuration + ", :" + percent );
         mSeekBar.setSecondaryProgress((int) (percent / 100.0f * mDuration));
     }
 
@@ -125,7 +123,7 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     }
 
     @OnClick(R.id.player_control_icon)
-    public void onPlayerControlClick(View view) {
+    public void onPlayerControlClick() {
         if (mPlayerControl.isPlaying()) {
             mVideoView.pause();
             mPlayerControlView.setImageResource(R.drawable.player_play_icon);

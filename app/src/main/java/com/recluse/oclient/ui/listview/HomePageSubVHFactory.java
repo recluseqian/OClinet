@@ -1,6 +1,7 @@
 package com.recluse.oclient.ui.listview;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
+import com.recluse.oclient.StartActivityUtils;
 import com.recluse.oclient.data.HomeSubModuleInfo;
 import com.recluse.oclient.ui.activity.DetailActivity;
 
@@ -70,6 +72,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
             Context context = mItemView.getContext();
             Glide.with(context)
                     .load(data.imgUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.default_place_holder))
                     .apply(RequestOptions.centerCropTransform())
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners((int) DisplayUtils.dp2px(context, IMAGE_RADIUS_SIZE))))
                     .into(mSubItemImageView);
@@ -79,7 +82,13 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
 
         @OnClick(R.id.module_sub_item_layout)
         public void onModuleSubItemClick(View view) {
-            DetailActivity.startActivity(view.getContext());
+            if (mData == null) {
+                return;
+            }
+
+            if (mData.contentType == 2) {
+                StartActivityUtils.startVideoActivity(view.getContext(), "", mData.plid, mData.rid);
+            }
         }
     }
 
@@ -128,6 +137,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
             Context context = mItemView.getContext();
             Glide.with(context)
                     .load(data.listImageUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.default_place_holder))
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners((int) DisplayUtils.dp2px(context, IMAGE_RADIUS_SIZE))))
                     .into(mImageView);
             mTitleView.setText(data.title);
@@ -183,6 +193,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
             Context context = mItemView.getContext();
             Glide.with(context)
                     .load(data.imgUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.default_place_holder))
                     .apply(RequestOptions.centerInsideTransform())
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners((int) DisplayUtils.dp2px(context, IMAGE_RADIUS_SIZE))))
                     .into(mImageView);
@@ -230,6 +241,7 @@ public class HomePageSubVHFactory extends BaseViewHolderFactory.SimpleViewHolder
             Context context = mItemView.getContext();
             Glide.with(context)
                     .load(data.imgUrl)
+                    .apply(RequestOptions.placeholderOf(R.drawable.default_place_holder))
                     .apply(RequestOptions.centerCropTransform())
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners((int) DisplayUtils.dp2px(context, IMAGE_RADIUS_SIZE))))
                     .into(mImageView);

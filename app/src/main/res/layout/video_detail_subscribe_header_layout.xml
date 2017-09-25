@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/video_subscribe_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/subscribe_bg"
+        android:gravity="center"
+        android:text="订阅"
+        android:textColor="@color/white"
+        android:textSize="13dp"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/video_subscribe_image"
+        android:layout_toLeftOf="@id/video_subscribe_btn"
+        android:layout_toRightOf="@id/video_subscribe_image"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text_black"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/video_subscribe_name"
+        android:layout_below="@id/video_subscribe_name"
+        android:layout_marginTop="2dp"
+        android:layout_toLeftOf="@id/video_subscribe_btn"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text_black"
+        android:textSize="12dp"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_fans_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/video_subscribe_name"
+        android:layout_below="@id/video_subscribe_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_gray"
+        android:textSize="9dp"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_model_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/video_subscribe_fans_count"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/video_subscribe_fans_count"
+        android:textColor="@color/text_gray"
+        android:textSize="9dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider_gray"
+        />
+
+</RelativeLayout>

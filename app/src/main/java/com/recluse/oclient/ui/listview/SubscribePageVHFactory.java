@@ -20,11 +20,13 @@ import com.recluse.base.view.listview.BaseRecyclerItemAdapter;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
+import com.recluse.oclient.StartActivityUtils;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.ui.BannerViewPagerHelper;
 import com.youth.banner.Banner;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModuleInfo> {
 
@@ -145,6 +147,15 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModul
             mContentTitleView.setText(data.contentTitle);
             mContentSubTitleView.setText(data.contentDesc);
         }
+
+        @OnClick(R.id.subscribe_item_layout)
+        public void onItemClick(View view) {
+            if (mData == null) {
+                return;
+            }
+
+            StartActivityUtils.startVideoActivity(view.getContext(), "", mData.plid, mData.subscribeContentId);
+        }
     }
 
     static class SubscribeBannerVH extends BaseRecyclerViewHolder<SubscribeModuleInfo> {
@@ -171,6 +182,7 @@ public class SubscribePageVHFactory extends BaseViewHolderFactory<SubscribeModul
                 mBannerHelper.updateImageList(data.mBannerInfoList);
             }
         }
+
     }
 }
 

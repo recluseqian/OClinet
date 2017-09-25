@@ -85,11 +85,18 @@ public abstract class VideoPlayerView extends FrameLayout implements IMediaContr
         mVideoView.start();
     }
 
+    public void stop() {
+        mVideoView.stopPlayback();
+        mVideoView.release(true);
+        cancelHideRunnable();
+        stopProgressTask();
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mVideoView != null) {
-            mVideoView.suspend();
+            mVideoView.release(true);
         }
         stopProgressTask();
         cancelHideRunnable();
@@ -173,9 +180,14 @@ public abstract class VideoPlayerView extends FrameLayout implements IMediaContr
     }
 
     private void stopProgressTask() {
+        if (mProgressTask != null) {
+            mProgressTask.cancel();
+        }
         if (mTimer != null) {
             mTimer.cancel();
         }
+        mProgressTask = null;
+        mTimer = null;
     }
 
     protected void startHideRunnable() {

@@ -12,6 +12,30 @@
         android:layout_height="40dp"
         android:orientation="horizontal"
         >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_home_actionbar_history"
+            />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_home_actionbar_download"
+            />
     </LinearLayout>
 
     <include
@@ -25,8 +49,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/divider_gray"
         android:layout_above="@id/main_activity_footer_bar"
+        android:background="@color/divider_gray"
         />
 
     <FrameLayout

@@ -6,9 +6,13 @@ import com.recluse.oclient.data.BannerInfoEntity;
 import com.recluse.oclient.data.HomeModuleEntity;
 import com.recluse.base.model.event.BaseEvent;
 import com.recluse.oclient.data.SubscribeEntity;
+import com.recluse.oclient.data.VideoDetailEntity;
+import com.recluse.oclient.data.VideoSubscribeEntity;
 import com.recluse.oclient.event.BannerInfoEvent;
 import com.recluse.oclient.event.HomePageModuleEvent;
 import com.recluse.oclient.event.SubscribePageInfoEvent;
+import com.recluse.oclient.event.VideoDetailEvent;
+import com.recluse.oclient.event.VideoSubscribeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -93,6 +97,45 @@ public class RxOClient {
                     public void accept(Throwable throwable) throws Exception {
                         Log.e(TAG, throwable.getLocalizedMessage());
                         EventBus.getDefault().post(new BannerInfoEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                    }
+                });
+    }
+
+    public static void getVideoDetail(final int uniqueId, String plid) {
+        RetrofitManager.getRetrofit(RetrofitManager.BASE_URL)
+                .create(OClientApi.class)
+                .getVideoDetail(plid)
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Consumer<VideoDetailEntity>() {
+                    @Override
+                    public void accept(VideoDetailEntity videoDetailEntity) throws Exception {
+                        EventBus.getDefault().post(new VideoDetailEvent(uniqueId, BaseEvent.CODE_SUCCESS, videoDetailEntity));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        EventBus.getDefault().post(new VideoDetailEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                    }
+                });
+    }
+
+
+    public static void getVideoSubscribe(final int uniqueId, String mid) {
+        RetrofitManager.getRetrofit(RetrofitManager.BASE_URL)
+                .create(OClientApi.class)
+                .getVideoSubscribe(mid, OClientApi.VIDEO_SUBSCRIBE_R_TYPES)
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Consumer<VideoSubscribeEntity>() {
+                    @Override
+                    public void accept(VideoSubscribeEntity videoSubscribeEntity) throws Exception {
+                        EventBus.getDefault().post(new VideoSubscribeEvent(uniqueId, BaseEvent.CODE_SUCCESS, videoSubscribeEntity));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        EventBus.getDefault().post(new VideoSubscribeEvent(uniqueId, BaseEvent.CODE_FAILED, null));
                     }
                 });
     }

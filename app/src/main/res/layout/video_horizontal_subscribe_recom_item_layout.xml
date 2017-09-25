@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/video_subscribe_recom_item_layout"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    >
+
+    <ImageView
+        android:id="@+id/video_subscribe_recom_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/video_subscribe_recom_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/video_subscribe_recom_item_image"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/text_gray"
+        android:textSize="11dp"
+        />
+
+</RelativeLayout>

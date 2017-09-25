@@ -62,6 +62,10 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public int getUniqueId() {
+        return mUniqueId;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetNullEvent(NullEvent event) {
         //do nothing
