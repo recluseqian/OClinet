@@ -87,10 +87,6 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
         super.onViewRecycled(holder);
     }
 
-    @CallSuper
-    public void onPageDestroy() {
-    }
-
     @Override
     public int getItemCount() {
         return mDataList == null ? 0 : mDataList.size();

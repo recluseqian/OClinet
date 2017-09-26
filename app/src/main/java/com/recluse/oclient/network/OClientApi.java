@@ -12,10 +12,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static com.recluse.oclient.network.OClientApi.AGENT_HEADER;
-import static com.recluse.oclient.network.OClientApi.COOKIE_HEADER;
-import static com.recluse.oclient.network.OClientApi.TOKEN_HEADER;
-
 /**
  * Created by recluse on 17-9-13.
  */

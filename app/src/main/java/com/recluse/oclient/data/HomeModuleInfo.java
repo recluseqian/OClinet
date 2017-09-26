@@ -5,10 +5,6 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by recluse on 17-9-13.
- */
-
 public class HomeModuleInfo implements Serializable {
     public String moduleName;
     public int moduleType;
@@ -19,7 +15,7 @@ public class HomeModuleInfo implements Serializable {
     public int hasMore;
     public Object jumpTo;
     public int weight;
-    public List<HomeSubModuleInfo> items;
+    public List<HomeModuleSubInfo> items;
 
     public boolean hasMore() {
         return hasMore != 0;

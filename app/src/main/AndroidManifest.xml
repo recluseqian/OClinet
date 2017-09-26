@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.DetailActivity"/>
+        <activity
+            android:name=".ui.activity.DetailActivity"
+            android:launchMode="singleTop"
+            />
     </application>
 </manifest>

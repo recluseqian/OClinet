@@ -8,10 +8,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.recluse.oclient.data.BannerInfo;
 import com.youth.banner.loader.ImageLoader;
 
-/**
- * Created by recluse on 17-9-18.
- */
-
 public class GlideImageLoader extends ImageLoader{
 
     private static final String TAG = "GlideImageLoader";

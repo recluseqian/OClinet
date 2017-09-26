@@ -1,4 +1,4 @@
-package com.recluse.oclient.ui.listview.widget;
+package com.recluse.oclient.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

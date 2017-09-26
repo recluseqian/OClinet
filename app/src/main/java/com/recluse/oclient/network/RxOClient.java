@@ -2,9 +2,9 @@ package com.recluse.oclient.network;
 
 import android.util.Log;
 
+import com.recluse.base.model.event.BaseEvent;
 import com.recluse.oclient.data.BannerInfoEntity;
 import com.recluse.oclient.data.HomeModuleEntity;
-import com.recluse.base.model.event.BaseEvent;
 import com.recluse.oclient.data.SubscribeEntity;
 import com.recluse.oclient.data.VideoDetailEntity;
 import com.recluse.oclient.data.VideoSubscribeEntity;

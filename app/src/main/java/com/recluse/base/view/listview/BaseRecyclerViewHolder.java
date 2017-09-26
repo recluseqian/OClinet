@@ -2,6 +2,7 @@ package com.recluse.base.view.listview;
 
 import android.support.annotation.CallSuper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mItemView = itemView;
+        Log.d(TAG, "BaseRecyclerViewHolder: " + this.getClass().getSimpleName());
     }
 
     @CallSuper

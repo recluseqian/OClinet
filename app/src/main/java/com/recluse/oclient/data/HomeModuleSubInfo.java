@@ -2,11 +2,7 @@ package com.recluse.oclient.data;
 
 import java.io.Serializable;
 
-/**
- * Created by recluse on 17-9-14.
- */
-
-public class HomeSubModuleInfo implements Serializable{
+public class HomeModuleSubInfo implements Serializable{
     public int id;
     public String title;
     public String imgUrl;

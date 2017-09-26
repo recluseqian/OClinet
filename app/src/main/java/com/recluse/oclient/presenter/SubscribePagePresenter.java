@@ -12,18 +12,14 @@ import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.event.BannerInfoEvent;
 import com.recluse.oclient.event.SubscribePageInfoEvent;
 import com.recluse.oclient.network.RxOClient;
-import com.recluse.oclient.ui.fragment.SubscribePageListFragment;
-import com.recluse.oclient.ui.listview.SubscribePageVHFactory;
+import com.recluse.oclient.ui.viewholderfactory.SubscribePageBannerVHFactory;
+import com.recluse.oclient.ui.viewholderfactory.SubscribePageVHFactory;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by recluse on 17-9-15.
- */
 
 public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<SubscribeModuleInfo> {
 
@@ -88,6 +84,7 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
     @Override
     public List<BaseViewHolderFactory<SubscribeModuleInfo>> createFactoryList(Context context) {
         List<BaseViewHolderFactory<SubscribeModuleInfo>> list = new ArrayList<>();
+        list.add(new SubscribePageBannerVHFactory(context));
         list.add(new SubscribePageVHFactory(context));
         return list;
     }

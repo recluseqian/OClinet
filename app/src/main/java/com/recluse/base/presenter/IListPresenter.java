@@ -39,6 +39,7 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
         protected List<BaseViewHolderFactory<D>> mFactoryList;
         protected int mPageIndex;
         protected int mState = State.TYPE_IDEAL;
+        protected int mRequestCount;
 
         @NonNull
         protected IListView mCallback;

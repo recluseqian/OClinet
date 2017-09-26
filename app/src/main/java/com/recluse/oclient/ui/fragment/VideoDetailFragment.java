@@ -14,10 +14,11 @@ import com.recluse.base.view.activity.BaseAppCompatActivity;
 import com.recluse.base.view.fragment.BaseListFragment;
 import com.recluse.oclient.R;
 import com.recluse.oclient.data.VideoDetailEntity;
-import com.recluse.oclient.data.VideoInfo;
+import com.recluse.oclient.data.VideoDetailInfo;
+import com.recluse.oclient.data.VideoDetailItemInfo;
 import com.recluse.oclient.presenter.VideoDetailPresenter;
 import com.recluse.oclient.ui.activity.DetailActivity;
-import com.recluse.oclient.ui.listview.widget.OCPlayerView;
+import com.recluse.oclient.ui.widget.OCPlayerView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,7 +30,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
  * Created by recluse on 17-9-19.
  */
 
-public class VideoDetailFragment extends BaseListFragment<VideoInfo> {
+public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>> {
 
     private static final String TAG = "VideoDetailFragment";
 
@@ -81,7 +82,7 @@ public class VideoDetailFragment extends BaseListFragment<VideoInfo> {
 
     @NonNull
     @Override
-    protected IListPresenter<VideoInfo> createPresenter() {
+    protected IListPresenter<VideoDetailItemInfo<?>> createPresenter() {
         return new VideoDetailPresenter(this);
     }
 
@@ -98,7 +99,7 @@ public class VideoDetailFragment extends BaseListFragment<VideoInfo> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetClickEvent(ClickEvent<VideoDetailEntity.VideoListBean> event) {
+    public void onGetClickEvent(ClickEvent<VideoDetailInfo.VideoListBean> event) {
         if (event.mUniqueId != mUniqueId || event.mData == null) {
             return;
         }

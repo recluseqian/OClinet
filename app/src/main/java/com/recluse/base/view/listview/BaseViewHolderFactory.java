@@ -1,8 +1,10 @@
 package com.recluse.base.view.listview;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +21,12 @@ public abstract class BaseViewHolderFactory<T> {
         mContext = context;
     }
 
-    public abstract int getViewType(T data, int position);
+    @CallSuper
+    public int getViewType(T data, int position) {
+        return BaseRecyclerItemAdapter.UNKNOWN_TYPE;
+    }
 
+    @Nullable
     public abstract BaseRecyclerViewHolder createViewHolder(ViewGroup parent, int viewType);
 
     /**
@@ -55,7 +61,7 @@ public abstract class BaseViewHolderFactory<T> {
             if (isDefaultType(data, position)) {
                 return VIEW_TYPE_DEFAULT + getBaseType();
             }
-            return BaseRecyclerItemAdapter.UNKNOWN_TYPE;
+            return super.getViewType(data, position);
         }
 
         @Override
