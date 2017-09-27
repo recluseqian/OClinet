@@ -115,7 +115,26 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp">
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/subscribe_item_meta_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9dp"
+            android:textColor="@color/text_gray"
+            />
+
+        <TextView
+            android:id="@+id/subscribe_content_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9dp"
+            android:textColor="@color/text_gray"
+            android:layout_alignParentRight="true"
+            />
 
     </RelativeLayout>
 

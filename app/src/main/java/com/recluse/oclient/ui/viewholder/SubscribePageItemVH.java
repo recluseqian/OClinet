@@ -15,7 +15,8 @@ import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.utils.ViewsUtils;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.oclient.R;
-import com.recluse.oclient.StartActivityUtils;
+import com.recluse.oclient.utils.ModuleUtils;
+import com.recluse.oclient.utils.StartActivityUtils;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 
 import butterknife.BindView;
@@ -42,6 +43,10 @@ public class SubscribePageItemVH extends BaseRecyclerViewHolder<SubscribeModuleI
     @BindView(R.id.subscribe_item_header_view_stub)
     ViewStub mHeaderViewStub;
     View mHeaderView;
+    @BindView(R.id.subscribe_item_meta_info)
+    TextView mSubscribeContentMetaInfo;
+    @BindView(R.id.subscribe_content_type)
+    TextView mContentTypeView;
 
     public SubscribePageItemVH(View itemView) {
         super(itemView);
@@ -86,6 +91,8 @@ public class SubscribePageItemVH extends BaseRecyclerViewHolder<SubscribeModuleI
                 .into(mContentInfoImageView);
         mContentTitleView.setText(data.contentTitle);
         mContentSubTitleView.setText(data.contentDesc);
+        mSubscribeContentMetaInfo.setText(data.quantity + " | " + data.viewCount + "人观看");
+        mContentTypeView.setText("#" + ModuleUtils.getModuleType(data.subscribeContentType));
     }
 
     @OnClick(R.id.subscribe_item_layout)

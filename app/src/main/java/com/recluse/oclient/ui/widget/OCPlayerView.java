@@ -19,13 +19,17 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarChangeListener{
+public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "OCPlayerView";
 
     private static int SEEK_BAR_STATE_IDEAL = 0;
     private static int SEEK_BAR_STATE_DRAGGING = 1;
 
+    @BindView(R.id.video_top_cover_layout)
+    View mTopCoverLayout;
+    @BindView(R.id.video_bottom_cover_layout)
+    View mBottomCoverLayout;
     @BindView(R.id.player_seek_bar)
     SeekBar mSeekBar;
     @BindView(R.id.player_fore_ground_icon)
@@ -55,6 +59,18 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     @Override
     protected View getCoverView() {
         return LayoutInflater.from(mContext).inflate(R.layout.player_cover_view_layout, this, false);
+    }
+
+    @Override
+    public void show() {
+        ViewsUtils.setViewVisibility(mTopCoverLayout, View.VISIBLE);
+        ViewsUtils.setViewVisibility(mBottomCoverLayout, View.VISIBLE);
+    }
+
+    @Override
+    public void hide() {
+        ViewsUtils.setViewVisibility(mTopCoverLayout, View.GONE);
+        ViewsUtils.setViewVisibility(mBottomCoverLayout, View.GONE);
     }
 
     public void restart(String url) {

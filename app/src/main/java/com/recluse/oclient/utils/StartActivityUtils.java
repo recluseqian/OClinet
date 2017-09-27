@@ -1,4 +1,4 @@
-package com.recluse.oclient;
+package com.recluse.oclient.utils;
 
 import android.content.Context;
 import android.os.Bundle;

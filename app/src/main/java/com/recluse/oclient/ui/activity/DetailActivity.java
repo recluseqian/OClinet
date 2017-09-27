@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -16,11 +15,23 @@ import com.recluse.oclient.ui.fragment.VideoDetailFragment;
 
 public class DetailActivity extends BaseAppCompatActivity {
 
+    private static final String TAG = "DetailActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initFragment(super.getIntent().getExtras());
+    }
 
-        Bundle bundle = super.getIntent().getExtras();
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            initFragment(intent.getExtras());
+        }
+    }
+
+    private void initFragment(Bundle bundle) {
         if (bundle != null) {
             int type = bundle.getInt(Const.INTENT_FRAGMENT_TYPE);
             BaseFragment fragment = FragmentFactory.createFragment(type, bundle);

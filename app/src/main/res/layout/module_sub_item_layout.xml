@@ -34,5 +34,21 @@
         android:textColor="@color/text_gray"
         />
 
+    <TextView
+        android:id="@+id/module_sub_item_type_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="9dp"
+        android:layout_alignBottom="@id/module_sub_item_image"
+        android:layout_alignRight="@id/module_sub_item_image"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:background="@drawable/module_type_text_bg"
+        />
 
 </RelativeLayout>

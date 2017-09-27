@@ -194,6 +194,10 @@ public abstract class VideoDetailItemVH<T> extends BaseRecyclerViewHolder<VideoD
         protected LinearLayoutManager createLayoutManager(@NonNull Context context) {
             return new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         }
+
+        public void smoothScrollToPosition(int position) {
+            mRecyclerView.smoothScrollToPosition(position);
+        }
     }
 
     public static class PlaceHolderVH extends BaseRecyclerViewHolder<VideoDetailInfo> {

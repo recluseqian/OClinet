@@ -3,7 +3,6 @@ package com.recluse.oclient.ui.viewholder;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.recluse.base.utils.TimerUtils;
 import com.recluse.base.view.activity.BaseAppCompatActivity;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.oclient.R;
-import com.recluse.oclient.StartActivityUtils;
+import com.recluse.oclient.utils.StartActivityUtils;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.data.VideoDetailInfo;
 import com.recluse.oclient.data.VideoDetailSubItemInfo;
@@ -26,14 +25,16 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<VideoDetailSubItemInfo<T>> {
+public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<VideoDetailSubItemInfo<T>>
+        implements View.OnClickListener {
 
     private static final String TAG = "VideoDetailSubItemVH";
 
     T mSubItemData;
 
-    public VideoDetailSubItemVH(View itemView) {
+    VideoDetailSubItemVH(View itemView) {
         super(itemView);
+        itemView.setOnClickListener(this);
     }
 
     @Override
@@ -74,8 +75,8 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
             mDurationView.setText(TimerUtils.getDurationString(subItemData.mLength * 1000));
         }
 
-        @OnClick(R.id.video_h_list_item_layout)
-        public void onItemClick(View view) {
+        @Override
+        public void onClick(View view) {
             if (mData == null) {
                 return;
             }
@@ -83,7 +84,7 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
             Context context = view.getContext();
             if (context instanceof BaseAppCompatActivity) {
                 int uniqueId = ((BaseAppCompatActivity) context).getUniqueId();
-                EventBus.getDefault().post(new ClickEvent<>(uniqueId, mSubItemData, view, 0));
+                EventBus.getDefault().post(new ClickEvent<>(uniqueId, mSubItemData, view, mPosition));
             }
         }
     }
@@ -111,8 +112,8 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
             mTitleView.setText(subItemData.contentTitle);
         }
 
-        @OnClick(R.id.video_subscribe_recom_item_layout)
-        public void onItemClick(View view) {
+        @Override
+        public void onClick(View view) {
             if (mData == null) {
                 return;
             }
@@ -123,7 +124,6 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
                     mSubItemData.plid,
                     mSubItemData.subscribeContentId);
         }
-
     }
 
     public static class VideoRecomSubItemVH extends VideoDetailSubItemVH<VideoDetailInfo.RecommendListBean> {
@@ -152,6 +152,19 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
 
             mTitleView.setText(subItemData.title);
             mSubTitleView.setText(subItemData.description);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mSubItemData == null) {
+                return;
+            }
+
+            StartActivityUtils.startVideoActivity(
+                    view.getContext(),
+                    "",
+                    mSubItemData.plid,
+                    mSubItemData.rid);
         }
     }
 }

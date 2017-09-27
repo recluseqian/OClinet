@@ -3,6 +3,7 @@ package com.recluse.oclient.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.recluse.oclient.data.VideoDetailInfo;
 import com.recluse.oclient.data.VideoDetailItemInfo;
 import com.recluse.oclient.presenter.VideoDetailPresenter;
 import com.recluse.oclient.ui.activity.DetailActivity;
+import com.recluse.oclient.ui.viewhelper.MovieIndicatorHelper;
+import com.recluse.oclient.ui.viewholder.VideoDetailItemVH;
 import com.recluse.oclient.ui.widget.OCPlayerView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -25,10 +28,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-
-/**
- * Created by recluse on 17-9-19.
- */
 
 public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>> {
 
@@ -78,6 +77,7 @@ public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>
         params.height = (int) (width * 9 / 16 + 0.5f);
         mVideoView.setLayoutParams(params);
         mVideoView.start(mUrl);
+
     }
 
     @NonNull
@@ -94,6 +94,11 @@ public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
     protected boolean isNeedRegisterEventBus() {
         return true;
     }
@@ -106,6 +111,11 @@ public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>
 
         if (mVideoView != null) {
             mVideoView.restart(event.mData.mp4SdUrl);
+        }
+
+        RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(3);
+        if (holder instanceof VideoDetailItemVH.VideoHorizontalRecomListVH) {
+            ((VideoDetailItemVH.VideoHorizontalRecomListVH) holder).smoothScrollToPosition(event.mPosition - 1);
         }
     }
 

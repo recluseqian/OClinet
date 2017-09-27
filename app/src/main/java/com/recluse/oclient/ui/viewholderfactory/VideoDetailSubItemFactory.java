@@ -6,30 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-import com.recluse.base.model.event.ClickEvent;
-import com.recluse.base.utils.DisplayUtils;
-import com.recluse.base.utils.TimerUtils;
-import com.recluse.base.view.activity.BaseAppCompatActivity;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
-import com.recluse.oclient.StartActivityUtils;
-import com.recluse.oclient.data.SubscribeModuleInfo;
-import com.recluse.oclient.data.VideoDetailInfo;
 import com.recluse.oclient.data.VideoDetailItemInfo;
 import com.recluse.oclient.data.VideoDetailSubItemInfo;
 import com.recluse.oclient.ui.viewholder.VideoDetailSubItemVH;
-
-import org.greenrobot.eventbus.EventBus;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 public class VideoDetailSubItemFactory extends BaseViewHolderFactory<VideoDetailSubItemInfo<?>>{
 

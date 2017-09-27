@@ -6,6 +6,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/video_top_cover_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
@@ -36,6 +37,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/video_bottom_cover_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"

@@ -13,7 +13,8 @@ import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.utils.SystemUtils;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.oclient.R;
-import com.recluse.oclient.StartActivityUtils;
+import com.recluse.oclient.utils.ModuleUtils;
+import com.recluse.oclient.utils.StartActivityUtils;
 import com.recluse.oclient.data.HomeModuleSubInfo;
 
 import butterknife.BindView;
@@ -35,6 +36,8 @@ public abstract class HomePageSubItemVH extends BaseRecyclerViewHolder<HomeModul
         TextView mTitleView;
         @BindView(R.id.module_sub_item_meta_info)
         TextView mMetaInfoView;
+        @BindView(R.id.module_sub_item_type_view)
+        TextView mTypeView;
 
         public ModuleSubItemVH(View itemView) {
             super(itemView);
@@ -62,6 +65,7 @@ public abstract class HomePageSubItemVH extends BaseRecyclerViewHolder<HomeModul
                     .into(mSubItemImageView);
             mTitleView.setText(data.title);
             mMetaInfoView.setText(data.viewCount + "人观看");
+            mTypeView.setText(ModuleUtils.getModuleType(data.contentType));
         }
 
         @OnClick(R.id.module_sub_item_layout)
