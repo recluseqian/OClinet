@@ -14,12 +14,10 @@ import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.view.activity.BaseAppCompatActivity;
 import com.recluse.base.view.fragment.BaseListFragment;
 import com.recluse.oclient.R;
-import com.recluse.oclient.data.VideoDetailEntity;
 import com.recluse.oclient.data.VideoDetailInfo;
 import com.recluse.oclient.data.VideoDetailItemInfo;
 import com.recluse.oclient.presenter.VideoDetailPresenter;
 import com.recluse.oclient.ui.activity.DetailActivity;
-import com.recluse.oclient.ui.viewhelper.MovieIndicatorHelper;
 import com.recluse.oclient.ui.viewholder.VideoDetailItemVH;
 import com.recluse.oclient.ui.widget.OCPlayerView;
 
