@@ -7,10 +7,6 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by recluse on 17-5-23.
- */
-
 public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
 
     private static final String TAG = "BaseRecyclerViewHolder";

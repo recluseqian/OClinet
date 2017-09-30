@@ -30,7 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public abstract class VideoDetailItemVH<T> extends BaseRecyclerViewHolder<VideoDetailItemInfo<T>> {
+public abstract class VideoDetailItemVH<T> extends BaseModuleViewHolder<VideoDetailItemInfo<T>> {
 
     private static final String TAG = "VideoDetailItemVH";
 

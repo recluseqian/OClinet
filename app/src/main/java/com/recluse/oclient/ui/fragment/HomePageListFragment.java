@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.recluse.base.presenter.IListPresenter;
 import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.view.fragment.BaseListFragment;
-import com.recluse.base.view.listview.BaseDividerDecoration;
+import com.recluse.oclient.ui.BaseDividerDecoration;
 import com.recluse.oclient.data.HomeModuleInfo;
 import com.recluse.oclient.presenter.HomePagePresenter;
 
@@ -25,7 +25,7 @@ public class HomePageListFragment extends BaseListFragment<HomeModuleInfo> {
     }
 
     @Override
-    protected boolean supportRefresh() {
+    public boolean supportRefresh() {
         return true;
     }
 
@@ -40,14 +40,6 @@ public class HomePageListFragment extends BaseListFragment<HomeModuleInfo> {
         return new BaseDividerDecoration.Builder()
                 .setWidth((int) DisplayUtils.dp2px(super.getContext(), 5))
                 .build();
-    }
-
-    @Override
-    public void onFailed(int type) {
-        super.onFailed(type);
-        if (mSpringView != null) {
-            mSpringView.onFinishFreshAndLoad();
-        }
     }
 
 }

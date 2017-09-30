@@ -2,7 +2,7 @@ package com.recluse.oclient.data;
 
 import java.io.Serializable;
 
-public class BannerInfo implements Serializable{
+public class BannerInfo extends BaseModuleInfo{
 
     public Object pageurl;
     public Object liveStatus;

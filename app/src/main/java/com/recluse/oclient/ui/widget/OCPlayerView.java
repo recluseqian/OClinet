@@ -40,13 +40,11 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     TextView mProgressTextView;
     @BindView(R.id.player_duration_text)
     TextView mDurationTextView;
-    @BindView(R.id.player_loading_icon)
-    ImageView mLoadingImage;
+    @BindView(R.id.loading_view)
+    LoadingView mLoadingView;
 
     private int mDuration;
     private int mSeekBarState = SEEK_BAR_STATE_IDEAL;
-
-    private Animation mLoadingAnim;
 
     public OCPlayerView(Context context) {
         super(context);
@@ -76,9 +74,7 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     public void restart(String url) {
         super.stop();
         ViewsUtils.setViewVisibility(mPlayerForegroundView, View.VISIBLE);
-        ViewsUtils.setViewVisibility(mLoadingImage, View.VISIBLE);
-        mLoadingAnim = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
-        mLoadingImage.startAnimation(mLoadingAnim);
+        ViewsUtils.setViewVisibility(mLoadingView, View.VISIBLE);
         start(url);
     }
 
@@ -86,19 +82,13 @@ public class OCPlayerView extends VideoPlayerView implements SeekBar.OnSeekBarCh
     protected void onFinishInflate() {
         super.onFinishInflate();
         mSeekBar.setOnSeekBarChangeListener(this);
-
-        mLoadingAnim = AnimationUtils.loadAnimation(getContext(), R.anim.loading_anim);
-        mLoadingImage.startAnimation(mLoadingAnim);
     }
 
     @Override
     public void onPrepared(IMediaPlayer player) {
         super.onPrepared(player);
         ViewsUtils.setViewVisibility(mPlayerForegroundView, View.GONE);
-        if (mLoadingAnim != null) {
-            mLoadingAnim.cancel();
-        }
-        ViewsUtils.setViewVisibility(mLoadingImage, View.GONE);
+        ViewsUtils.setViewVisibility(mLoadingView, View.GONE);
         mPlayerControlView.setImageResource(R.drawable.player_pause_icon);
         mDuration = mPlayerControl.getDuration();
         if (mDuration > 0) {

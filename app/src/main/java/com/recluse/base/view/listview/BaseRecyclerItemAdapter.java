@@ -8,20 +8,15 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * Created by recluse on 17-5-23.
- */
-
 public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecyclerViewHolder<T>> {
 
-    public static final int UNKNOWN_TYPE = -1;
-    public static final int BASE_VIEW_TYPE = 0;
 
-    protected Context mContext;
-    protected List<T> mDataList;
-    protected List<? extends BaseViewHolderFactory<T>> mFactoryList;
 
-    public BaseRecyclerItemAdapter(Context context, List<T> dataList, List<? extends BaseViewHolderFactory<T>> factoryList) {
+    private Context mContext;
+    private List<T> mDataList;
+    private List<? extends BaseViewHolderFactory<?>> mFactoryList;
+
+    public BaseRecyclerItemAdapter(Context context, List<T> dataList, List<? extends BaseViewHolderFactory<?>> factoryList) {
         mContext = context;
         mDataList = dataList;
         mFactoryList = factoryList;
@@ -30,7 +25,7 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
 
     private void initFactoryList() {
         if (mFactoryList != null && mFactoryList.size() > 0) {
-            mFactoryList.get(0).setBaseType(BASE_VIEW_TYPE);
+            mFactoryList.get(0).setBaseType(BaseViewHolderFactory.BASE_VIEW_TYPE);
             for (int i = 1; i < mFactoryList.size(); i++) {
                 int baseType = mFactoryList.get(i - 1).getBaseType() + mFactoryList.get(i - 1).getViewTypeCount();
                 mFactoryList.get(i).setBaseType(baseType);
@@ -64,7 +59,7 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     }
 
     @Override
-    public void onViewAttachedToWindow(BaseRecyclerViewHolder<T> holder) {
+    public void onViewAttachedToWindow(BaseRecyclerViewHolder holder) {
         if (holder != null) {
             holder.onViewAttachedToWindow();
         }
@@ -72,7 +67,7 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     }
 
     @Override
-    public void onViewDetachedFromWindow(BaseRecyclerViewHolder<T> holder) {
+    public void onViewDetachedFromWindow(BaseRecyclerViewHolder holder) {
         if (holder != null) {
             holder.onViewDetachedFromWindow();
         }
@@ -80,7 +75,7 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     }
 
     @Override
-    public void onViewRecycled(BaseRecyclerViewHolder<T> holder) {
+    public void onViewRecycled(BaseRecyclerViewHolder holder) {
         if (holder != null) {
             holder.onViewRecycled();
         }
@@ -99,7 +94,7 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
         try {
             for (BaseViewHolderFactory factory : mFactoryList) {
                 int type = factory.getViewType(data, position);
-                if (type != UNKNOWN_TYPE) {
+                if (type != BaseViewHolderFactory.UNKNOWN_TYPE) {
                     return type;
                 }
             }
@@ -108,13 +103,13 @@ public class BaseRecyclerItemAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             catchException = true;
         } finally {
             if (catchException) {
-                return UNKNOWN_TYPE;
+                return BaseViewHolderFactory.UNKNOWN_TYPE;
             }
         }
-        return UNKNOWN_TYPE;
+        return BaseViewHolderFactory.UNKNOWN_TYPE;
     }
 
-    public T getData(int position) {
+    private T getData(int position) {
         return mDataList == null || position < 0 || position >= mDataList.size()
                 ? null
                 : mDataList.get(position);

@@ -3,9 +3,10 @@ package com.recluse.oclient.data;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeModuleInfo implements Serializable {
+public class HomeModuleInfo extends BaseModuleInfo implements BannerListProvider{
     public String moduleName;
     public int moduleType;
     public int style;
@@ -22,5 +23,12 @@ public class HomeModuleInfo implements Serializable {
     }
 
     @Expose
-    public List<BannerInfo> mBannerInfoList;
+    private List<BannerInfo> mBannerInfoList;
+    @Override
+    public List<BannerInfo> getBannerList() {
+        if (mBannerInfoList == null) {
+            mBannerInfoList = new ArrayList<>();
+        }
+        return mBannerInfoList;
+    }
 }

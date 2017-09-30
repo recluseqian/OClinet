@@ -7,6 +7,7 @@ import android.view.View;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 import com.recluse.oclient.R;
+import com.recluse.oclient.data.LocalInfo;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.ui.viewholder.SubscribePageItemVH;
 

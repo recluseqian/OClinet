@@ -1,20 +1,12 @@
 package com.recluse.oclient.network;
 
-import com.recluse.oclient.data.BannerInfoEntity;
-import com.recluse.oclient.data.HomeModuleEntity;
-import com.recluse.oclient.data.SubscribeEntity;
-import com.recluse.oclient.data.VideoDetailEntity;
-import com.recluse.oclient.data.VideoSubscribeEntity;
+import com.recluse.oclient.data.BaseDataEntity;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-
-/**
- * Created by recluse on 17-9-13.
- */
 
 public interface OClientApi {
 
@@ -36,13 +28,13 @@ public interface OClientApi {
             COOKIE_HEADER,
             TOKEN_HEADER})
     @GET(OClientApi.HOME_PAGE_MODULE)
-    Observable<HomeModuleEntity> getHomePageModule();
+    Observable<BaseDataEntity.HomeModuleEntity> getHomePageModule();
 
     @Headers({AGENT_HEADER,
             COOKIE_HEADER,
             TOKEN_HEADER})
     @GET(OClientApi.SUBSCRIBE_PAGE_INFO)
-    Observable<SubscribeEntity> getSubscribePageInfo(
+    Observable<BaseDataEntity.SubscribeEntity> getSubscribePageInfo(
             @Query("cursor") String cursor,
             @Query("pagesize") int pageSize);
 
@@ -50,7 +42,7 @@ public interface OClientApi {
             COOKIE_HEADER,
             TOKEN_HEADER})
     @GET(OClientApi.SUBSCRIBE_BANNER_INFO)
-    Observable<BannerInfoEntity> getBannerInfo(
+    Observable<BaseDataEntity.BannerInfoEntity> getBannerInfo(
             @Query("position") int position,
             @Query("rtypes") String rTypes);
 
@@ -58,13 +50,13 @@ public interface OClientApi {
             COOKIE_HEADER,
             TOKEN_HEADER})
     @GET(OClientApi.VIDEO_RECOMMEND_INFO)
-    Observable<VideoDetailEntity> getVideoDetail(@Path("plid") String plid);
+    Observable<BaseDataEntity.VideoDetailEntity> getVideoDetail(@Path("plid") String plid);
 
     @Headers({AGENT_HEADER,
             COOKIE_HEADER,
             TOKEN_HEADER})
     @GET(OClientApi.VIDEO_SUBSCRIBE_RECOMMEND)
-    Observable<VideoSubscribeEntity> getVideoSubscribe(
+    Observable<BaseDataEntity.VideoSubscribeEntity> getVideoSubscribe(
             @Query("mid") String mid,
             @Query("rtypes") String rTypes);
 

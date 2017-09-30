@@ -1,8 +1,6 @@
 package com.recluse.oclient.data;
 
-import java.io.Serializable;
-
-public class VideoDetailItemInfo<T> implements Serializable {
+public class VideoDetailItemInfo<T> extends BaseModuleInfo {
 
     public static class Type {
         public static final int SUBSCRIBE_INFO = 1;

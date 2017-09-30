@@ -1,31 +1,29 @@
-package com.recluse.base.view.listview;
+package com.recluse.oclient.ui;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by recluse on 17-9-15.
- */
+import com.recluse.oclient.data.LocalInfo;
+import com.recluse.oclient.ui.viewholder.BaseModuleViewHolder;
 
 public class BaseDividerDecoration extends RecyclerView.ItemDecoration {
+
+    private static final String TAG = "BaseDividerDecoration";
 
     private static Paint sPaint;
 
     private int mOrientation;
     private int mWidth;
 
-    public static BaseDividerDecoration newDefaultInstance() {
-        return new Builder().build();
+    private BaseDividerDecoration() {
     }
-
-    private BaseDividerDecoration(){}
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -41,8 +39,13 @@ public class BaseDividerDecoration extends RecyclerView.ItemDecoration {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
         int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+
+        for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
+            if (isIgnoreForItem(i, parent)) {
+                Log.e(TAG, "drawHorizontalDivider: ignore: " + i);
+                continue;
+            }
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
             int top = child.getBottom() + params.bottomMargin;
             int bottom = top + mWidth;
@@ -55,14 +58,33 @@ public class BaseDividerDecoration extends RecyclerView.ItemDecoration {
         int top = parent.getPaddingTop();
         int bottom = parent.getHeight() - parent.getPaddingBottom();
         int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+
+        for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
+            if (isIgnoreForItem(i, parent)) {
+                Log.e(TAG, "drawHorizontalDivider: ignore: " + i);
+                continue;
+            }
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
             int left = child.getRight() + params.rightMargin;
             int right = left + mWidth;
             RectF rectF = new RectF(left, top, right, bottom);
             c.drawRect(rectF, sPaint);
         }
+    }
+
+    private boolean isIgnoreForItem(int position, RecyclerView parent) {
+        RecyclerView.ViewHolder current, next;
+        int cur = 0, nex = 0;
+        current = parent.findContainingViewHolder(parent.getChildAt(position));
+        if (current instanceof BaseModuleViewHolder) {
+            cur = ((BaseModuleViewHolder) current).getDividerType() & LocalInfo.DIVIDER_HIDE_SELF;
+        }
+        next = parent.findContainingViewHolder(parent.getChildAt(position + 1));
+        if (next instanceof BaseModuleViewHolder) {
+            nex = ((BaseModuleViewHolder) next).getDividerType() & LocalInfo.DIVIDER_HIDE_PRE;
+        }
+        return cur != 0 || nex != 0;
     }
 
     @Override

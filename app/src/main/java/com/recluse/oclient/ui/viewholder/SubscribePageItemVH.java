@@ -22,7 +22,7 @@ import com.recluse.oclient.data.SubscribeModuleInfo;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SubscribePageItemVH extends BaseRecyclerViewHolder<SubscribeModuleInfo> {
+public class SubscribePageItemVH extends BaseModuleViewHolder<SubscribeModuleInfo> {
 
     private static final String TAG = "SubscribeModuleVH";
 
@@ -91,7 +91,7 @@ public class SubscribePageItemVH extends BaseRecyclerViewHolder<SubscribeModuleI
                 .into(mContentInfoImageView);
         mContentTitleView.setText(data.contentTitle);
         mContentSubTitleView.setText(data.contentDesc);
-        mSubscribeContentMetaInfo.setText(data.quantity + " | " + data.viewCount + "人观看");
+        mSubscribeContentMetaInfo.setText(data.quantity + " | " + ModuleUtils.getCountString(data.viewCount, "", "人观看"));
         mContentTypeView.setText("#" + ModuleUtils.getModuleType(data.subscribeContentType));
     }
 

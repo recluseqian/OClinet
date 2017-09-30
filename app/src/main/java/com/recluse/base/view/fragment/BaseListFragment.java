@@ -1,25 +1,24 @@
 package com.recluse.base.view.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewStub;
 
-import com.liaoinstan.springview.container.BaseFooter;
-import com.liaoinstan.springview.container.BaseHeader;
-import com.liaoinstan.springview.container.DefaultFooter;
-import com.liaoinstan.springview.container.DefaultHeader;
-import com.liaoinstan.springview.widget.SpringView;
 import com.recluse.base.presenter.IListPresenter;
-import com.recluse.base.view.listview.BaseDividerDecoration;
-import com.recluse.base.view.listview.IListView;
-import com.recluse.oclient.R;
+import com.recluse.oclient.ui.BaseDividerDecoration;
 import com.recluse.base.view.listview.BaseRecyclerItemAdapter;
+import com.recluse.base.view.IListView;
+import com.recluse.oclient.R;
+import com.recluse.oclient.ui.viewholder.ListFooterItemVH;
 
 import butterknife.BindView;
 
@@ -27,17 +26,16 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
 
     private static final String TAG = "BaseListFragment";
 
-    @BindView(R.id.spring_view)
-    protected SpringView mSpringView;
-    @BindView(R.id.recycler_view)
-    protected RecyclerView mRecyclerView;
+    @BindView(R.id.base_list_view_stub)
+    ViewStub mBaseListViewStub;
 
-    protected BaseHeader mHeader;
-    protected BaseFooter mFooter;
+    protected SwipeRefreshLayout mRefreshLayout;
+    protected RecyclerView mRecyclerView;
 
     protected IListPresenter<T> mPresenter;
     protected BaseRecyclerItemAdapter<T> mAdapter;
     protected LinearLayoutManager mLayoutManager;
+    private RecyclerView.OnScrollListener mOnScrollListener;
 
     @Override
     protected int getLayoutRes() {
@@ -48,8 +46,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initPresenter();
-        initSpringView();
-        initRecyclerView();
+        initView();
 
         mPresenter.requestData();
     }
@@ -61,44 +58,47 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
         mPresenter.initData(bundle);
     }
 
-    protected void initSpringView() {
-        mSpringView.setType(SpringView.Type.FOLLOW);
+    private void initView() {
         if (supportRefresh()) {
-            mHeader = new DefaultHeader(super.getContext());
-            mSpringView.setHeader(mHeader);
-        }
-        if (supportLoadMore()) {
-            mFooter = new DefaultFooter(super.getContext());
-            mSpringView.setFooter(mFooter);
+            mBaseListViewStub.setLayoutResource(R.layout.base_refresh_list_layout);
+        } else {
+            mBaseListViewStub.setLayoutResource(R.layout.base_list_layout);
         }
 
-        mSpringView.setListener(new SpringView.OnFreshListener() {
+        View view = mBaseListViewStub.inflate();
+
+        if (supportRefresh()) {
+            mRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+            if (mRefreshLayout != null) {
+                initSwipeRefreshLayout();
+            } else {
+                Log.e(TAG, "initView: can not find the swipe refresh layout");
+            }
+        }
+
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        if (mRecyclerView != null) {
+            initRecyclerView();
+        } else {
+            Log.e(TAG, "initView: can not find the recycler view");
+        }
+    }
+
+    private void initSwipeRefreshLayout() {
+        mRefreshLayout.setColorSchemeColors(super.getResources().getColor(R.color.colorPrimaryDark));
+        mRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (supportRefresh() && mPresenter != null) {
+                if (mPresenter != null) {
                     mPresenter.onRefresh();
-                    if (supportLoadMore()) {
-                        reEnableLoadMore();
-                    }
-                } else {
-                    Log.e(TAG, "do not support refresh on "
-                            + BaseListFragment.this.getClass().getSimpleName());
-                }
-            }
-
-            @Override
-            public void onLoadmore() {
-                if (supportLoadMore() && mPresenter != null) {
-                    mPresenter.onLoadMore();
-                } else {
-                    Log.e(TAG, "do not support load more on "
-                            + BaseListFragment.this.getClass().getSimpleName());
                 }
             }
         });
     }
 
-    protected void initRecyclerView() {
+    private void initRecyclerView() {
         if (mPresenter == null) {
             Log.e(TAG, "do not init the presenter properly");
             return;
@@ -108,9 +108,44 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         BaseDividerDecoration divider = createDividerDecoration();
+
         if (divider != null) {
             mRecyclerView.addItemDecoration(divider);
         }
+        mOnScrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                BaseListFragment.this.onScrollStateChanged(newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                BaseListFragment.this.onScrolled(dx, dy);
+            }
+        };
+        mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+    }
+
+    @CallSuper
+    protected void onScrollStateChanged(int newState) {
+        if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+            try {
+                RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(
+                        mAdapter.getItemCount() - 1);
+                if (holder instanceof ListFooterItemVH && mPresenter != null) {
+                    mPresenter.onLoadMore();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "can not get the holder");
+            }
+        }
+    }
+
+    protected void onScrolled(int dx, int dy) {
+
     }
 
     @NonNull
@@ -128,11 +163,13 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
         return null;
     }
 
-    protected boolean supportRefresh() {
+    @Override
+    public boolean supportRefresh() {
         return false;
     }
 
-    protected boolean supportLoadMore() {
+    @Override
+    public boolean supportLoadMore() {
         return false;
     }
 
@@ -142,12 +179,15 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
         if (mPresenter != null) {
             mPresenter.onDestroy();
         }
+        if (mRecyclerView != null) {
+            mRecyclerView.removeOnScrollListener(mOnScrollListener);
+        }
     }
 
     @Override
     public void onDataSetChanged() {
-        if (mSpringView != null) {
-            mSpringView.onFinishFreshAndLoad();
+        if (mRefreshLayout != null && mRefreshLayout.isRefreshing()) {
+            mRefreshLayout.setRefreshing(false);
         }
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
@@ -156,10 +196,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
 
     @Override
     public void onUpdateList(int positionStart, int itemCount) {
-        if (mSpringView != null) {
-            mSpringView.onFinishFreshAndLoad();
+        if (mRefreshLayout != null && mRefreshLayout.isRefreshing()) {
+            mRefreshLayout.setRefreshing(false);
         }
-
         if (mAdapter != null) {
             mAdapter.notifyItemRangeChanged(positionStart, itemCount);
         }
@@ -167,25 +206,12 @@ public abstract class BaseListFragment<T> extends BaseFragment implements IListV
 
     @Override
     public void onNoMoreContent() {
-        if (mSpringView != null) {
-            mSpringView.onFinishFreshAndLoad();
-            mSpringView.removeView(mSpringView.getFooterView());
-        }
-    }
 
-    void reEnableLoadMore() {
-        if (mFooter == null) {
-            mFooter = new DefaultFooter(super.getContext());
-        }
-        mSpringView.setFooter(mFooter);
     }
 
     @Override
     public void onFailed(int type) {
-        if (mSpringView != null) {
-            mSpringView.onFinishFreshAndLoad();
-            mSpringView.setEnable(false);
-        }
+
     }
 
     @Override

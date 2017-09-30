@@ -3,17 +3,17 @@ package com.recluse.oclient.presenter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.recluse.base.presenter.IListPresenter;
+import com.recluse.base.view.IListView;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
-import com.recluse.base.view.listview.IListView;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.data.VideoDetailInfo;
 import com.recluse.oclient.data.VideoDetailItemInfo;
 import com.recluse.oclient.data.VideoDetailSubItemInfo;
-import com.recluse.oclient.event.VideoDetailEvent;
-import com.recluse.oclient.event.VideoSubscribeEvent;
 import com.recluse.oclient.network.RxOClient;
+import com.recluse.oclient.network.event.BaseNetEvent;
 import com.recluse.oclient.ui.activity.DetailActivity;
 import com.recluse.oclient.ui.viewholderfactory.VideoDetailItemVHFactory;
 
@@ -29,6 +29,8 @@ public class VideoDetailPresenter extends IListPresenter.SimpleListPresenter<Vid
 
     private String mPlid;
     private String mMid;
+
+    private int mRequestCount;
 
     public VideoDetailPresenter(@NonNull IListView callback) {
         super(callback);
@@ -53,8 +55,8 @@ public class VideoDetailPresenter extends IListPresenter.SimpleListPresenter<Vid
     }
 
     @Override
-    public List<BaseViewHolderFactory<VideoDetailItemInfo<?>>> createFactoryList(Context context) {
-        List<BaseViewHolderFactory<VideoDetailItemInfo<?>>> list = new ArrayList<>();
+    public List<BaseViewHolderFactory<?>> createFactoryList(Context context) {
+        List<BaseViewHolderFactory<?>> list = new ArrayList<>();
         list.add(new VideoDetailItemVHFactory(context));
         return list;
     }
@@ -63,8 +65,8 @@ public class VideoDetailPresenter extends IListPresenter.SimpleListPresenter<Vid
     private SubscribeModuleInfo mSubscribeModuleInfo;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetVideoDetailEvent(VideoDetailEvent event) {
-        if (mCallback == null || event.uniqueId != mUniqueId) {
+    public void onGetVideoDetailEvent(BaseNetEvent.VideoDetailEvent event) {
+        if (event.uniqueId != mUniqueId) {
             return;
         }
 
@@ -81,14 +83,15 @@ public class VideoDetailPresenter extends IListPresenter.SimpleListPresenter<Vid
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetVideoSubscribeEvent(VideoSubscribeEvent event) {
-        if (mCallback == null || mUniqueId != event.uniqueId) {
+    public void onGetVideoSubscribeEvent(BaseNetEvent.VideoSubscribeEvent event) {
+        if (mUniqueId != event.uniqueId) {
             return;
         }
+
+        Log.d(TAG, "onGetVideoSubscribeEvent: ");
+
         if (event.data != null) {
             mSubscribeModuleInfo = event.data.data;
-        } else {
-
         }
 
         mRequestCount--;
@@ -140,15 +143,15 @@ public class VideoDetailPresenter extends IListPresenter.SimpleListPresenter<Vid
         mCallback.onDataSetChanged();
     }
 
-    private <S> VideoDetailItemInfo<List<S>> createNestedListItemInfo(int type, List<S> data, String title) {
+    private <S> VideoDetailItemInfo<List<VideoDetailSubItemInfo<S>>> createNestedListItemInfo(int type, List<S> data, String title) {
         if (data == null || data.size() <= 1) {
             return null;
         }
         List<VideoDetailSubItemInfo<S>> list = new ArrayList<>();
         for (S item : data) {
-            list.add(new VideoDetailSubItemInfo<S>(type, item));
+            list.add(new VideoDetailSubItemInfo<>(type, item));
         }
-        VideoDetailItemInfo itemInfo = new VideoDetailItemInfo(type, list);
+        VideoDetailItemInfo<List<VideoDetailSubItemInfo<S>>> itemInfo = new VideoDetailItemInfo<>(type, list);
         itemInfo.title = title;
         return itemInfo;
     }

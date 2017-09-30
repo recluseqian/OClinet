@@ -10,11 +10,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.recluse.base.model.event.ClickEvent;
+import com.recluse.base.utils.DateUtils;
 import com.recluse.base.utils.DisplayUtils;
 import com.recluse.base.utils.TimerUtils;
 import com.recluse.base.view.activity.BaseAppCompatActivity;
 import com.recluse.base.view.listview.BaseRecyclerViewHolder;
 import com.recluse.oclient.R;
+import com.recluse.oclient.utils.ModuleUtils;
 import com.recluse.oclient.utils.StartActivityUtils;
 import com.recluse.oclient.data.SubscribeModuleInfo;
 import com.recluse.oclient.data.VideoDetailInfo;
@@ -136,6 +138,10 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
         TextView mTitleView;
         @BindView(R.id.video_recom_content_sub_title)
         TextView mSubTitleView;
+        @BindView(R.id.subscribe_item_meta_info)
+        TextView mSubscribeContentMetaInfo;
+        @BindView(R.id.subscribe_content_type)
+        TextView mContentTypeView;
 
         public VideoRecomSubItemVH(View itemView) {
             super(itemView);
@@ -152,6 +158,12 @@ public abstract class VideoDetailSubItemVH<T> extends BaseRecyclerViewHolder<Vid
 
             mTitleView.setText(subItemData.title);
             mSubTitleView.setText(subItemData.description);
+
+            StringBuilder builder = new StringBuilder(subItemData.quantity);
+            builder.append(" | ").append(DateUtils.getPublishTime(subItemData.publishTime, "YYYY/MM/dd"));
+            builder.append(" | ").append(ModuleUtils.getCountString(subItemData.viewcount, "", "人观看"));
+            mSubscribeContentMetaInfo.setText(builder.toString());
+            mContentTypeView.setText("#视频");
         }
 
         @Override

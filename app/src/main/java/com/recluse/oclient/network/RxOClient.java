@@ -2,27 +2,14 @@ package com.recluse.oclient.network;
 
 import android.util.Log;
 
-import com.recluse.base.model.event.BaseEvent;
-import com.recluse.oclient.data.BannerInfoEntity;
-import com.recluse.oclient.data.HomeModuleEntity;
-import com.recluse.oclient.data.SubscribeEntity;
-import com.recluse.oclient.data.VideoDetailEntity;
-import com.recluse.oclient.data.VideoSubscribeEntity;
-import com.recluse.oclient.event.BannerInfoEvent;
-import com.recluse.oclient.event.HomePageModuleEvent;
-import com.recluse.oclient.event.SubscribePageInfoEvent;
-import com.recluse.oclient.event.VideoDetailEvent;
-import com.recluse.oclient.event.VideoSubscribeEvent;
+import com.recluse.oclient.data.BaseDataEntity;
+import com.recluse.oclient.network.event.BaseNetEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-
-/**
- * Created by recluse on 17-9-13.
- */
 
 public class RxOClient {
 
@@ -34,18 +21,18 @@ public class RxOClient {
                 .getHomePageModule()
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<HomeModuleEntity>() {
+                .subscribe(new Consumer<BaseDataEntity.HomeModuleEntity>() {
                     @Override
-                    public void accept(HomeModuleEntity moduleEntity) throws Exception {
+                    public void accept(BaseDataEntity.HomeModuleEntity moduleEntity) throws Exception {
                         Log.d(TAG, "receive data of " + moduleEntity.getClass().getSimpleName());
                         EventBus.getDefault().post(
-                                new HomePageModuleEvent(uniqueId, BaseEvent.CODE_SUCCESS, moduleEntity));
+                                new BaseNetEvent.HomePageModuleEvent(uniqueId, BaseNetEvent.CODE_SUCCESS, moduleEntity));
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         EventBus.getDefault().post(
-                                new HomePageModuleEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                                new BaseNetEvent.HomePageModuleEvent(uniqueId, BaseNetEvent.CODE_FAILED, null));
                     }
                 }, new Action() {
                     @Override
@@ -60,18 +47,18 @@ public class RxOClient {
                 .getSubscribePageInfo(cursor, pageSize)
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<SubscribeEntity>() {
+                .subscribe(new Consumer<BaseDataEntity.SubscribeEntity>() {
                     @Override
-                    public void accept(SubscribeEntity subscribeEntity) throws Exception {
+                    public void accept(BaseDataEntity.SubscribeEntity subscribeEntity) throws Exception {
                         Log.d(TAG, "receive data of " + subscribeEntity.getClass().getSimpleName());
                         EventBus.getDefault().post(
-                                new SubscribePageInfoEvent(uniqueId, BaseEvent.CODE_SUCCESS, subscribeEntity));
+                                new BaseNetEvent.SubscribePageInfoEvent(uniqueId, BaseNetEvent.CODE_SUCCESS, subscribeEntity));
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         EventBus.getDefault().post(
-                                new SubscribePageInfoEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                                new BaseNetEvent.SubscribePageInfoEvent(uniqueId, BaseNetEvent.CODE_FAILED, null));
                     }
                 }, new Action() {
                     @Override
@@ -86,17 +73,17 @@ public class RxOClient {
                 .getBannerInfo(position, OClientApi.BANNER_TYPES)
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<BannerInfoEntity>() {
+                .subscribe(new Consumer<BaseDataEntity.BannerInfoEntity>() {
                     @Override
-                    public void accept(BannerInfoEntity bannerInfoEntity) throws Exception {
+                    public void accept(BaseDataEntity.BannerInfoEntity bannerInfoEntity) throws Exception {
                         Log.d(TAG, "receive data of " + bannerInfoEntity.getClass().getSimpleName());
-                        EventBus.getDefault().post(new BannerInfoEvent(uniqueId, BaseEvent.CODE_SUCCESS, bannerInfoEntity));
+                        EventBus.getDefault().post(new BaseNetEvent.BannerInfoEvent(uniqueId, BaseNetEvent.CODE_SUCCESS, bannerInfoEntity));
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         Log.e(TAG, throwable.getLocalizedMessage());
-                        EventBus.getDefault().post(new BannerInfoEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                        EventBus.getDefault().post(new BaseNetEvent.BannerInfoEvent(uniqueId, BaseNetEvent.CODE_FAILED, null));
                     }
                 });
     }
@@ -107,15 +94,15 @@ public class RxOClient {
                 .getVideoDetail(plid)
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<VideoDetailEntity>() {
+                .subscribe(new Consumer<BaseDataEntity.VideoDetailEntity>() {
                     @Override
-                    public void accept(VideoDetailEntity videoDetailEntity) throws Exception {
-                        EventBus.getDefault().post(new VideoDetailEvent(uniqueId, BaseEvent.CODE_SUCCESS, videoDetailEntity));
+                    public void accept(BaseDataEntity.VideoDetailEntity videoDetailEntity) throws Exception {
+                        EventBus.getDefault().post(new BaseNetEvent.VideoDetailEvent(uniqueId, BaseNetEvent.CODE_SUCCESS, videoDetailEntity));
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        EventBus.getDefault().post(new VideoDetailEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                        EventBus.getDefault().post(new BaseNetEvent.VideoDetailEvent(uniqueId, BaseNetEvent.CODE_FAILED, null));
                     }
                 });
     }
@@ -127,15 +114,15 @@ public class RxOClient {
                 .getVideoSubscribe(mid, OClientApi.VIDEO_SUBSCRIBE_R_TYPES)
                 .observeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Consumer<VideoSubscribeEntity>() {
+                .subscribe(new Consumer<BaseDataEntity.VideoSubscribeEntity>() {
                     @Override
-                    public void accept(VideoSubscribeEntity videoSubscribeEntity) throws Exception {
-                        EventBus.getDefault().post(new VideoSubscribeEvent(uniqueId, BaseEvent.CODE_SUCCESS, videoSubscribeEntity));
+                    public void accept(BaseDataEntity.VideoSubscribeEntity videoSubscribeEntity) throws Exception {
+                        EventBus.getDefault().post(new BaseNetEvent.VideoSubscribeEvent(uniqueId, BaseNetEvent.CODE_SUCCESS, videoSubscribeEntity));
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        EventBus.getDefault().post(new VideoSubscribeEvent(uniqueId, BaseEvent.CODE_FAILED, null));
+                        EventBus.getDefault().post(new BaseNetEvent.VideoSubscribeEvent(uniqueId, BaseNetEvent.CODE_FAILED, null));
                     }
                 });
     }

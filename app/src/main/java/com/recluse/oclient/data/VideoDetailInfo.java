@@ -35,6 +35,12 @@ public class VideoDetailInfo {
         public String shortWebUrl;
         public String mp4SdUrl;
         public String mp4HdUrl;
+        public String mp4SdUrlOrign;
+        public String mp4HdUrlOrign;
+        public String m3u8SdUrl;
+        public String m3u8HdUrl;
+        public String m3u8SdUrlOrign;
+        public String m3u8HdUrlOrign;
     }
 
     public static class RecommendListBean {

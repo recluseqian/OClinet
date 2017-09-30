@@ -1,18 +1,20 @@
 package com.recluse.oclient.presenter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.recluse.oclient.network.event.BaseNetEvent;
 import com.recluse.base.presenter.IListPresenter;
+import com.recluse.base.utils.SystemUtils;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
-import com.recluse.base.view.listview.IListView;
+import com.recluse.base.view.IListView;
+import com.recluse.oclient.data.BaseDataEntity;
+import com.recluse.oclient.data.LocalInfo;
 import com.recluse.oclient.data.SubscribeModuleInfo;
-import com.recluse.oclient.event.BannerInfoEvent;
-import com.recluse.oclient.event.SubscribePageInfoEvent;
 import com.recluse.oclient.network.RxOClient;
-import com.recluse.oclient.ui.viewholderfactory.SubscribePageBannerVHFactory;
+import com.recluse.oclient.ui.viewholderfactory.BannerHeaderVHFactory;
+import com.recluse.oclient.ui.viewholderfactory.ListFooterItemVHFactory;
 import com.recluse.oclient.ui.viewholderfactory.SubscribePageVHFactory;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -26,23 +28,10 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
     private static final String TAG = "SubscribePagePresenter";
     private static final int PAGE_SIZE = 10;
 
-    private SubscribeModuleInfo mHeaderModule;
+    private int mState = State.TYPE_IDEAL;
 
     public SubscribePagePresenter(@NonNull IListView callback) {
         super(callback);
-    }
-
-    @Override
-    public void initData(Bundle bundle) {
-        super.initData(bundle);
-        mHeaderModule = new SubscribeModuleInfo();
-        mHeaderModule.mBannerInfoList = new ArrayList<>();
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        } else {
-            mDataList.clear();
-        }
-        mDataList.add(mHeaderModule);
     }
 
     @Override
@@ -74,37 +63,50 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
             return;
         }
         String cursor = "";
-        if (mDataList != null && !mDataList.isEmpty()) {
-            cursor = String.valueOf(mDataList.get(mDataList.size() - 1).score);
+        if (mDataList != null && mDataList.size() > 2) {
+            cursor = String.valueOf(mDataList.get(mDataList.size() - 2).score);
         }
         RxOClient.getSubscribeInfo(mUniqueId, PAGE_SIZE, cursor);
         mState = State.TYPE_LOADING;
     }
 
     @Override
-    public List<BaseViewHolderFactory<SubscribeModuleInfo>> createFactoryList(Context context) {
-        List<BaseViewHolderFactory<SubscribeModuleInfo>> list = new ArrayList<>();
-        list.add(new SubscribePageBannerVHFactory(context));
+    public List<BaseViewHolderFactory<?>> createFactoryList(Context context) {
+        List<BaseViewHolderFactory<?>> list = new ArrayList<>();
+        list.add(new ListFooterItemVHFactory(context));
+        list.add(new BannerHeaderVHFactory(context));
         list.add(new SubscribePageVHFactory(context));
         return list;
     }
 
+    @Override
+    protected List<SubscribeModuleInfo> createHeaderList() {
+        SubscribeModuleInfo header = new SubscribeModuleInfo();
+        header.getLocalInfo().mDataType = LocalInfo.LOCAL_DATA_TYPE_HEADER;
+        header.getLocalInfo().mDividerType = LocalInfo.DIVIDER_HIDE_SELF;
+        List<SubscribeModuleInfo> list = new ArrayList<>();
+        list.add(header);
+        return list;
+    }
+
+    @Override
+    protected List<SubscribeModuleInfo> createFooterList() {
+        SubscribeModuleInfo footer = new SubscribeModuleInfo();
+        footer.getLocalInfo().mDataType = LocalInfo.LOCAL_DATA_TYPE_LOADING;
+        footer.getLocalInfo().mDividerType = LocalInfo.DIVIDER_HIDE_SELF | LocalInfo.DIVIDER_HIDE_PRE;
+        List<SubscribeModuleInfo> list = new ArrayList<>();
+        list.add(footer);
+        return list;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetSubscribePageInfoEvent(SubscribePageInfoEvent event) {
-        if (mCallback == null || mUniqueId != event.uniqueId) {
+    public void onGetSubscribePageInfoEvent(BaseNetEvent.SubscribePageInfoEvent event) {
+        if (mUniqueId != event.uniqueId) {
             return;
         }
 
         if (event.data != null && event.data.data != null) {
-            Log.d(TAG, "onGetSubscribePageInfoEvent: " + event.data.data.size());
-            if (mState == State.TYPE_REFRESHING) {
-                List<SubscribeModuleInfo> list = new ArrayList<>(event.data.data.size() + 1);
-                list.add(mHeaderModule);
-                list.addAll(event.data.data);
-                updateList(list, true, false);
-            } else {
-                updateList(event.data.data, false, false);
-            }
+            updateList(event.data.data, mState == State.TYPE_REFRESHING, false);
         } else {
             mCallback.onFailed(0);
         }
@@ -114,22 +116,23 @@ public class SubscribePagePresenter extends IListPresenter.SimpleListPresenter<S
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetBannerInfo(BannerInfoEvent event) {
-        if (mCallback == null || mUniqueId != event.uniqueId) {
+    public void onGetBannerInfo(BaseNetEvent.BannerInfoEvent event) {
+        if (mUniqueId != event.uniqueId) {
             return;
         }
 
         if (event.data != null && event.data.data != null) {
-            if (mHeaderModule == null || mHeaderModule.mBannerInfoList == null) {
+            SubscribeModuleInfo header;
+            if (SystemUtils.isListEmtpy(mHeaderList)
+                    || (header = mHeaderList.get(0)) == null) {
                 Log.e(TAG, "onGetBannerInfo: do not init header module");
                 return;
             }
-            mHeaderModule.mBannerInfoList.clear();
-            mHeaderModule.mBannerInfoList.addAll(event.data.data);
+
+            header.getBannerList().clear();
+            header.getBannerList().addAll(event.data.data);
 
             mCallback.onUpdateList(0, 1);
         }
-
-        mState = State.TYPE_IDEAL;
     }
 }

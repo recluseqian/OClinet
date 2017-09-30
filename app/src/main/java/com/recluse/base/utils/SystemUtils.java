@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -47,5 +48,9 @@ public class SystemUtils {
 
     public static Context getApplicationContext() {
         return mContext;
+    }
+
+    public static boolean isListEmtpy(List<?> list) {
+        return list == null || list.isEmpty();
     }
 }

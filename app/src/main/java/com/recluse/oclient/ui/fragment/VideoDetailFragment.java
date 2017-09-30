@@ -20,6 +20,7 @@ import com.recluse.oclient.presenter.VideoDetailPresenter;
 import com.recluse.oclient.ui.activity.DetailActivity;
 import com.recluse.oclient.ui.viewholder.VideoDetailItemVH;
 import com.recluse.oclient.ui.widget.OCPlayerView;
+import com.recluse.oclient.utils.ModuleUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -73,6 +74,8 @@ public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>
         float width = DisplayUtils.getWindowWidth(super.getContext());
         params.width = (int) width;
         params.height = (int) (width * 9 / 16 + 0.5f);
+//        params.width = DisplayUtils.getWindowWidth(super.getContext());
+//        params.height = DisplayUtils.getWindowHeight(super.getContext());
         mVideoView.setLayoutParams(params);
         mVideoView.start(mUrl);
 
@@ -108,12 +111,7 @@ public class VideoDetailFragment extends BaseListFragment<VideoDetailItemInfo<?>
         }
 
         if (mVideoView != null) {
-            mVideoView.restart(event.mData.mp4SdUrl);
-        }
-
-        RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(3);
-        if (holder instanceof VideoDetailItemVH.VideoHorizontalRecomListVH) {
-            ((VideoDetailItemVH.VideoHorizontalRecomListVH) holder).smoothScrollToPosition(event.mPosition - 1);
+            mVideoView.restart(ModuleUtils.getVideoUrl(event.mData));
         }
     }
 

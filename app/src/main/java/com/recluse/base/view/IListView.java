@@ -1,15 +1,13 @@
-package com.recluse.base.view.listview;
-
-import com.recluse.base.view.IView;
-
-/**
- * Created by recluse on 17-9-15.
- */
+package com.recluse.base.view;
 
 public interface IListView<T> extends IView<T> {
 
     void onUpdateList(int positionStart, int itemCount);
 
     void onNoMoreContent();
+
+    boolean supportRefresh();
+
+    boolean supportLoadMore();
 
 }

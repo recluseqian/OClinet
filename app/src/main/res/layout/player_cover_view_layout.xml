@@ -102,12 +102,11 @@
         android:background="@drawable/player_bg"
         />
 
-    <ImageView
-        android:id="@+id/player_loading_icon"
+    <com.recluse.oclient.ui.widget.LoadingView
+        android:id="@+id/loading_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/loading_image"
         />
 
 </RelativeLayout>

@@ -14,6 +14,9 @@ public abstract class BaseViewHolderFactory<T> {
 
     private static final String TAG = "BaseViewHolderFactory";
 
+    static final int UNKNOWN_TYPE = -1;
+    static final int BASE_VIEW_TYPE = 0;
+
     private int mBaseType;
     protected Context mContext;
 
@@ -23,7 +26,7 @@ public abstract class BaseViewHolderFactory<T> {
 
     @CallSuper
     public int getViewType(T data, int position) {
-        return BaseRecyclerItemAdapter.UNKNOWN_TYPE;
+        return UNKNOWN_TYPE;
     }
 
     @Nullable

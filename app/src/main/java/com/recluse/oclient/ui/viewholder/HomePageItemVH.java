@@ -22,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public abstract class HomePageItemVH extends BaseRecyclerViewHolder<HomeModuleInfo> {
+public abstract class HomePageItemVH extends BaseModuleViewHolder<HomeModuleInfo> {
 
     private static final String TAG = "HomeModuleVH";
 

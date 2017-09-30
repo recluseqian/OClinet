@@ -2,12 +2,12 @@ package com.recluse.base.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.recluse.base.model.event.NullEvent;
-import com.recluse.base.view.listview.IListView;
+import com.recluse.base.utils.SystemUtils;
+import com.recluse.base.view.IListView;
 import com.recluse.base.view.listview.BaseViewHolderFactory;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public interface IListPresenter<D> extends IPresenter<List<D>> {
 
-    List<? extends BaseViewHolderFactory<D>> getFactoryList(Context context);
+    List<? extends BaseViewHolderFactory<?>> getFactoryList(Context context);
 
     void onRefresh();
 
@@ -35,11 +35,11 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
 
         private static final String TAG = "Stub";
 
+        private List<BaseViewHolderFactory<?>> mFactoryList;
+
         protected List<D> mDataList;
-        protected List<BaseViewHolderFactory<D>> mFactoryList;
-        protected int mPageIndex;
-        protected int mState = State.TYPE_IDEAL;
-        protected int mRequestCount;
+        protected List<D> mHeaderList;
+        protected List<D> mFooterList;
 
         @NonNull
         protected IListView mCallback;
@@ -54,7 +54,8 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
         public void onCreate() {
             EventBus.getDefault().register(this);
             mDataList = new ArrayList<>();
-            mPageIndex = 1;
+            mHeaderList = createHeaderList();
+            mFooterList = createFooterList();
         }
 
         @Override
@@ -67,19 +68,18 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             if (mDataList == null) {
                 mDataList = new ArrayList<>();
             }
-
             return mDataList;
         }
 
         @Override
-        public List<BaseViewHolderFactory<D>> getFactoryList(Context context) {
+        public List<BaseViewHolderFactory<?>> getFactoryList(Context context) {
             if (mFactoryList == null) {
                 mFactoryList = createFactoryList(context);
             }
             return mFactoryList;
         }
 
-        public abstract List<BaseViewHolderFactory<D>> createFactoryList(Context context);
+        public abstract List<BaseViewHolderFactory<?>> createFactoryList(Context context);
 
         @Override
         public void initData(Bundle bundle) {
@@ -101,6 +101,15 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             //nothing to do
         }
 
+
+        protected List<D> createHeaderList() {
+            return null;
+        }
+
+        protected List<D> createFooterList() {
+            return null;
+        }
+
         protected void updateList(@NonNull List<D> list, boolean isFromRefresh, boolean processForeach) {
             if (mDataList == null) {
                 Log.e(TAG, "do not init data list when the presenter is created in "
@@ -111,7 +120,13 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             int start = 0;
             if (isFromRefresh) {
                 mDataList.clear();
+                if (!SystemUtils.isListEmtpy(mHeaderList)) {
+                    mDataList.addAll(mHeaderList);
+                }
             } else {
+                if (!SystemUtils.isListEmtpy(mFooterList)) {
+                    mDataList.removeAll(mFooterList);
+                }
                 start = mDataList.size();
             }
 
@@ -123,6 +138,10 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
                 }
             } else {
                 mDataList.addAll(list);
+            }
+
+            if (!SystemUtils.isListEmtpy(mFooterList)) {
+                mDataList.addAll(mFooterList);
             }
 
             if (isFromRefresh) {
@@ -140,6 +159,7 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
             return true;
         }
 
+
         @Subscribe(threadMode = ThreadMode.POSTING)
         public void onNullEvent(NullEvent event) {
 
@@ -153,7 +173,7 @@ public interface IListPresenter<D> extends IPresenter<List<D>> {
         }
 
         @Override
-        public List<BaseViewHolderFactory<D>> createFactoryList(Context context) {
+        public List<BaseViewHolderFactory<?>> createFactoryList(Context context) {
             return null;
         }
     }

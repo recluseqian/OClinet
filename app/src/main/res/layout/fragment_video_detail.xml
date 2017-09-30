@@ -5,19 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/spring_view"
+    <ViewStub
+        android:id="@+id/base_list_view_stub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        >
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </com.liaoinstan.springview.widget.SpringView>
+        />
 
     <com.recluse.oclient.ui.widget.OCPlayerView
         android:id="@+id/video_view"
@@ -39,31 +31,32 @@
             android:id="@+id/video_play_count"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/text_light_gray"
-            android:textSize="11dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="播放："
             android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
             android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="播放："
+            android:textColor="@color/text_light_gray"
+            android:textSize="12dp"
             />
 
         <ImageView
             android:id="@+id/video_share_icon"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:src="@drawable/icon_share_write"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:src="@drawable/icon_share_write"
             />
+
         <ImageView
             android:id="@+id/video_download_icon"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:src="@drawable/download_video"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="15dp"
+            android:src="@drawable/download_video"
             />
 
     </LinearLayout>
